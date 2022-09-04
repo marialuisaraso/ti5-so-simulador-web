@@ -7,6 +7,7 @@ export class CPU {
     runningJob: Process | null;
     memory: Memory;
     cache?: Memory;
-    roundRobinQuantum: number = 5;
+    roundRobinQuantum: number = 10;
+    contextChangeTime: number = 1;
     clockSpeed: number = 100; // in milliseconds
 }
