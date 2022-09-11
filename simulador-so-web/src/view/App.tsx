@@ -1,8 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { main } from '../simulator/main';
 
 function App() {
+  React.useEffect(()=>{
+    main();
+  },[])
   return (
     <div className="App">
       <header className="App-header">
