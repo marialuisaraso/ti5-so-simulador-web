@@ -28,10 +28,12 @@ body{
   --gray-03: #60616F;
   --gray-04: #898A93;
   --gray-05: #D5D5DB;
-  --mars: #E85937;
-  --sun: #F5D15F;
+  --roxo: #C100CC;
+  --azul: #6157DD;
+  --verde-claro: #00FFFF;
+  --azul-claro: #00AFEF;
   --text: #FFF;
-  --background: #808080;
+  --background: #505050;
   --background-section: linear-gradient(180deg, #040327 0%, #0D0E13 24.49%);
   --background-form: #808080;
   

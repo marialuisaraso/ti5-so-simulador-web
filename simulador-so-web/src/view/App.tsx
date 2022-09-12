@@ -21,7 +21,7 @@ function App() {
         <Main>
           <FirstTitle>Finalmente é possível!</FirstTitle>
 
-          <SecondTitle>Simule um sistema operacional de maneira simples e gráfica. <span>.</span></SecondTitle>
+          <SecondTitle>Simule um sistema operacional de maneira simples e gráfica <span>.</span></SecondTitle>
 
 
           <DivButton>

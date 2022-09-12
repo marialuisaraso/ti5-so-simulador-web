@@ -66,7 +66,7 @@ export const Main = styled.div`
 `;
 
 export const FirstTitle = styled.div`
-  color: var(--sun);
+  color: var(--verde-claro);
   font: var(--text-4);
   text-transform: uppercase;
   letter-spacing: ${pixelToRem(5)};
@@ -88,7 +88,7 @@ export const SecondTitle = styled.p`
   }
 
   span {
-    color: var(--mars);
+    color: var(--azul-claro);
   }
 `;
 
@@ -113,25 +113,6 @@ export const DivButton = styled.div`
   }
 `;
 
-export const DivIcons = styled.div`
-  display: flex;
-  justify-content: space-between;
-  max-width: ${pixelToRem(1440)};
-  align-items: center;
-  width: 100%;
-
-  @media ${device.mobile} {
-    flex-direction: column;
-    text-align: center;
-    gap: ${pixelToRem(64)};
-    padding-bottom: ${pixelToRem(72)};
-    max-width: ${pixelToRem(222)};
-
-    & image {
-      margin: 0 auto;
-    }
-  }
-`;
 
 export const SecondSubTitle = styled.p`
   font: var(--font-heading-1);
