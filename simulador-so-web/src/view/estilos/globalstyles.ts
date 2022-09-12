@@ -33,12 +33,12 @@ body{
   --verde-claro: #00FFFF;
   --azul-claro: #00AFEF;
   --text: #FFF;
-  --background: #505050;
+  --background: #504050;
   --background-section: linear-gradient(180deg, #040327 0%, #0D0E13 24.49%);
   --background-form: #808080;
   
   /* Fonts */
-    --font-display: 500 ${pixelToRem(62)}/${pixelToRem(96)} "Montserrat", sans-serif;
+    --font-display: 500 ${pixelToRem(60)}/${pixelToRem(90)} "Montserrat", sans-serif;
 
     --font-heading-1: 400 ${pixelToRem(32)}/${pixelToRem(
   48

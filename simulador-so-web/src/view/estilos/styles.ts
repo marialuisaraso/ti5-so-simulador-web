@@ -92,6 +92,35 @@ export const SecondTitle = styled.p`
   }
 `;
 
+export const SimulatorTitle = styled.div`
+  color: var(--verde-claro);
+  font: var(--text-4);
+  text-transform: uppercase;
+  letter-spacing: ${pixelToRem(5)};
+
+  @media ${device.mobile} {
+    font: var(--font-mobile-text-1);
+    letter-spacing: ${pixelToRem(5)};
+    padding-bottom: ${pixelToRem(11)};
+  }
+`;
+
+export const SimulatorCanvas = styled.div`
+  width: 100%;
+  height: ${pixelToRem(440)} ;
+  border: 5px solid; /* As 4 bordas sólidas com 5px de espessura */
+  border-color: var(--roxo); 
+  margin-top: 20px;
+  margin-BOTTOM: 20px;
+
+  @media ${device.mobile} {
+    font: var(--font-mobile-text-1);
+    letter-spacing: ${pixelToRem(5)};
+    padding-bottom: ${pixelToRem(11)};
+  }
+  }
+`;
+  
 export const Subtitle = styled.p`
   color: var(--gray-05);
   font: var(--font-heading-3);

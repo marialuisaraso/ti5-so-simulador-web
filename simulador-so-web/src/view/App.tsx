@@ -1,7 +1,7 @@
 import { GlobalStyles } from './estilos/globalstyles'
 
 import {
-  Container, Header, Logo, Main, FirstTitle, SecondTitle, Subtitle, DivButton, SecondSubTitle, TextLogo, DivLogo, DivLogoFooter, SectionFooter, DivImageSmoke, DivFooterBottom, DivFooterMenu
+  Container, Header, Logo, Main, FirstTitle, SecondTitle, SimulatorTitle, Subtitle, DivButton, SecondSubTitle, TextLogo, DivLogo, DivLogoFooter, SectionFooter, DivImageSmoke, DivFooterBottom, DivFooterMenu, SimulatorCanvas
 } from './estilos/styles'
 
 import Button from './components/Button'
@@ -20,21 +20,23 @@ function App() {
 
         <Main>
           <FirstTitle>Finalmente é possível!</FirstTitle>
-
-          <SecondTitle>Simule um sistema operacional de maneira simples e gráfica <span>.</span></SecondTitle>
-
-
+          <SecondTitle>Simule um sistema operacional multicore de maneira simples e gráfica <span>.</span></SecondTitle>
           <DivButton>
             <Button text="COMEÇAR" fullWidth />
           </DivButton>
-
         </Main>
+
+        <SimulatorTitle>GERÊNCIA DE PROCESSOS</SimulatorTitle>
+        <SimulatorCanvas></SimulatorCanvas>
+
+        <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
+        <SimulatorCanvas></SimulatorCanvas>
 
       </Container>
 
         <SectionFooter>
           <DivImageSmoke>
-            <img src="/images/smoke.svg" alt="" />
+            <img src="/images/escritoLogo.png" alt="" />
           </DivImageSmoke>
 
           <DivFooterBottom>
