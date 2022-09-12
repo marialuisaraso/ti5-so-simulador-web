@@ -18,7 +18,25 @@ export const ButtonComponent = styled.button<ButtonProps>`
   }
 `;
 
-export const CanvasButtonComponent = styled.button<ButtonProps>`
+export const CanvasButtonComponent1 = styled.button<ButtonProps>`
+  background: var(--azul);
+  width: ${({ fullWidth }) => (fullWidth ? "100%" : pixelToRem(200))};
+  height: ${pixelToRem(40)};
+  border: none;
+  border-radius: ${pixelToRem(6)};
+  color: var(--text);
+  font: var(--text-3);
+  font-weight: 500;
+  position: relative;
+  margin: auto 5px 15px 5px; 
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+
+export const CanvasButtonComponent2 = styled.button<ButtonProps>`
   background: none;
   width: ${({ fullWidth }) => (fullWidth ? "100%" : pixelToRem(200))};
   height: ${pixelToRem(40)};
@@ -30,7 +48,10 @@ export const CanvasButtonComponent = styled.button<ButtonProps>`
   font-weight: 500;
   position: relative;
   margin: auto 5px 15px 5px; 
-
+  &:active{
+    border: none;
+    background: var(--azul);
+  }
   &:hover {
     cursor: pointer;
   }

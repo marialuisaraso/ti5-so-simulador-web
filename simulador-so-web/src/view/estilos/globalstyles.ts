@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
 import pixelToRem from "../utils/pxToRem";
-import { device } from "./responsive";
 
 export const GlobalStyles = createGlobalStyle`
 *{
