@@ -1,4 +1,4 @@
-import { ButtonComponent } from './styles'
+import { ButtonComponent, CanvasButtonComponent } from './styles'
 
 
 export interface ButtonProps {
@@ -19,4 +19,17 @@ function Button({ text, fullWidth }: ButtonProps) {
   );
 }
 
-export default Button;
+function CanvasButton({ text, fullWidth }: ButtonProps) {
+  return (
+    <>
+      <CanvasButtonComponent
+        fullWidth={fullWidth}>
+
+
+        {text}
+      </CanvasButtonComponent>
+    </>
+  );
+}
+
+export { Button, CanvasButton} ;

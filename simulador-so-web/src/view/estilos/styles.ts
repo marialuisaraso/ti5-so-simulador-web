@@ -112,6 +112,10 @@ export const SimulatorCanvas = styled.div`
   border-color: var(--roxo); 
   margin-top: 20px;
   margin-BOTTOM: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
 
   @media ${device.mobile} {
     font: var(--font-mobile-text-1);

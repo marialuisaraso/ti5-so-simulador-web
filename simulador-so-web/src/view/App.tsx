@@ -4,7 +4,7 @@ import {
   Container, Header, Logo, Main, FirstTitle, SecondTitle, SimulatorTitle, Subtitle, DivButton, SecondSubTitle, TextLogo, DivLogo, DivLogoFooter, SectionFooter, DivImageSmoke, DivFooterBottom, DivFooterMenu, SimulatorCanvas
 } from './estilos/styles'
 
-import Button from './components/Button'
+import { Button, CanvasButton}  from './components/Button'
 import pixelToRem from './utils/pxToRem'
 
 function App() {
@@ -27,10 +27,17 @@ function App() {
         </Main>
 
         <SimulatorTitle>GERÊNCIA DE PROCESSOS</SimulatorTitle>
-        <SimulatorCanvas></SimulatorCanvas>
+        <SimulatorCanvas>
+            <CanvasButton text="NOVO PROCESSO" />
+            <CanvasButton text="PAUSAR" />
+            <CanvasButton text="FINALIZAR" />
+        </SimulatorCanvas>
 
         <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
-        <SimulatorCanvas></SimulatorCanvas>
+        <SimulatorCanvas>
+            <CanvasButton text="APLICAR ALG. 1" />
+            <CanvasButton text="APLICAR ALG. 2" />
+        </SimulatorCanvas>
 
       </Container>
 
