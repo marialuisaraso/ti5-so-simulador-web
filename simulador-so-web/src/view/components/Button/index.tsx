@@ -1,4 +1,4 @@
-import { ButtonComponent, CanvasButtonComponent } from './styles'
+import { ButtonComponent, CanvasButtonComponent1, CanvasButtonComponent2 } from './styles'
 
 
 export interface ButtonProps {
@@ -19,17 +19,30 @@ function Button({ text, fullWidth }: ButtonProps) {
   );
 }
 
-function CanvasButton({ text, fullWidth }: ButtonProps) {
+function CanvasButton1({ text, fullWidth }: ButtonProps) {
   return (
     <>
-      <CanvasButtonComponent
+      <CanvasButtonComponent1
         fullWidth={fullWidth}>
 
 
         {text}
-      </CanvasButtonComponent>
+      </CanvasButtonComponent1>
     </>
   );
 }
 
-export { Button, CanvasButton} ;
+function CanvasButton2({ text, fullWidth }: ButtonProps) {
+  return (
+    <>
+      <CanvasButtonComponent2
+        fullWidth={fullWidth}>
+
+
+        {text}
+      </CanvasButtonComponent2>
+    </>
+  );
+}
+
+export { Button, CanvasButton1, CanvasButton2} ;
