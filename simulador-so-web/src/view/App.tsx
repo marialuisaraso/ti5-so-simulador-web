@@ -1,7 +1,7 @@
 import { GlobalStyles } from './estilos/globalstyles'
 
 import {
-  Container, Header, Logo, Main, FirstTitle, SecondTitle, SimulatorTitle, Subtitle, DivButton, SecondSubTitle, TextLogo, DivLogo, DivLogoFooter, SectionFooter, DivImageSmoke, DivFooterBottom, DivFooterMenu, SimulatorCanvas
+  Container, Header, LogoSuperior, LogoInferior, Main, FirstTitle, SecondTitle, SimulatorTitle, Subtitle, DivButton, SecondSubTitle, TextLogo, DivLogo, DivLogoFooter, SectionFooter, DivImageSmoke, DivFooterBottom, DivFooterMenu, SimulatorCanvas
 } from './estilos/styles'
 
 import { Button, CanvasButton}  from './components/Button'
@@ -15,7 +15,7 @@ function App() {
         <GlobalStyles />
 
         <Header>
-          <Logo />
+          <LogoSuperior />
         </Header>
 
         <Main>
@@ -44,16 +44,11 @@ function App() {
       </Container>
 
         <SectionFooter>
-          <DivImageSmoke>
-            <img src="/images/escritoLogo.png" alt="" />
-          </DivImageSmoke>
-
           <DivFooterBottom>
-            <DivLogoFooter>
-              <Logo />
-            </DivLogoFooter>
+            <LogoInferior />
 
             <DivFooterMenu>
+              
               <ul>
                 <li><a href="#topo">Voltar para o topo</a></li>
                 <li><a href="#simulador">Começar</a></li>

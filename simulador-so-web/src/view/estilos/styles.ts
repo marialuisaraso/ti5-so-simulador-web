@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import pixelToRem from "../utils/pxToRem";
 import { device } from "./responsive";
+import logo from "../imagens/escritoLogo.png"
 
 interface GalleryFlexContainerProps {
   flex?: "row" | "column";
@@ -42,11 +43,23 @@ export const Header = styled.div`
   }
 `;
 
-export const Logo = styled.image<GalleryFlexContainerProps>`
-  width: ${pixelToRem(201)};
-  height: ${pixelToRem(41)};
-  background-image: url("/imagens/escritoLogo.png");
+export const LogoSuperior = styled.image<GalleryFlexContainerProps>`
+  width: ${pixelToRem(480)};
+  height: ${pixelToRem(100)};
+  background-image: url(${logo});
+  margin-top: 20px;
+  margin-bottom: 1px;
+  @media ${device.mobile} {
+    height: ${pixelToRem(30)};
+  }
+`;
 
+export const LogoInferior = styled.image<GalleryFlexContainerProps>`
+  width: ${pixelToRem(480)};
+  height: ${pixelToRem(100)};
+  background-image: url(${logo});
+  margin-top: -40px;
+  margin-bottom: 40px;
   @media ${device.mobile} {
     height: ${pixelToRem(30)};
   }
@@ -57,6 +70,7 @@ export const Main = styled.div`
   flex-direction: column;
   max-width: ${pixelToRem(815)};
   padding-bottom: ${pixelToRem(103)};
+  margin-top: -20px;
 
   @media ${device.mobile} {
     max-width: 100vw;
