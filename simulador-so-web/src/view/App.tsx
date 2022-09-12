@@ -1,7 +1,7 @@
 import { GlobalStyles } from './estilos/globalstyles'
 
 import {
-  Container, Header, Logo, Main, FirstTitle, SecondTitle, Subtitle, AstrounautIllustration, DivButton, SecondSubTitle, TextLogo, DivLogo, DivLogoFooter, SectionFooter, DivImageSmoke, DivFooterBottom, DivFooterMenu
+  Container, Header, Logo, Main, FirstTitle, SecondTitle, Subtitle, DivButton, SecondSubTitle, TextLogo, DivLogo, DivLogoFooter, SectionFooter, DivImageSmoke, DivFooterBottom, DivFooterMenu
 } from './estilos/styles'
 
 import Button from './components/Button'
@@ -23,8 +23,6 @@ function App() {
 
           <SecondTitle>Simule um sistema operacional de maneira simples e gráfica. <span>.</span></SecondTitle>
 
-          <AstrounautIllustration />
-
 
           <DivButton>
             <Button text="COMEÇAR" fullWidth />
@@ -32,14 +30,12 @@ function App() {
 
         </Main>
 
-
       </Container>
 
         <SectionFooter>
           <DivImageSmoke>
             <img src="/images/smoke.svg" alt="" />
           </DivImageSmoke>
-
 
           <DivFooterBottom>
             <DivLogoFooter>
@@ -54,8 +50,6 @@ function App() {
             </DivFooterMenu>
           </DivFooterBottom>
         </SectionFooter>
-
-
     </>
 
   );

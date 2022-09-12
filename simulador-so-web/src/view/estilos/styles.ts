@@ -45,7 +45,7 @@ export const Header = styled.div`
 export const Logo = styled.image<GalleryFlexContainerProps>`
   width: ${pixelToRem(201)};
   height: ${pixelToRem(41)};
-  background-image: url("/images/logo-space-y.svg");
+  background-image: url("/imagens/escritoLogo.png");
 
   @media ${device.mobile} {
     height: ${pixelToRem(30)};
@@ -101,31 +101,6 @@ export const Subtitle = styled.p`
     padding: ${pixelToRem(16, 0, 32, 0)};
     text-align: center;
     max-width: ${pixelToRem(307)};
-  }
-`;
-
-export const AstrounautIllustration = styled.image`
-  width: ${pixelToRem(472)};
-  height: ${pixelToRem(600)};
-  position: absolute;
-  background-image: url("/images/home-mars-right.svg");
-  background-repeat: no-repeat;
-  right: 0;
-  top: ${pixelToRem(10)};
-
-  @media ${device.mobile} {
-    position: relative;
-    order: 4;
-    width: ${pixelToRem(307)};
-    left: ${pixelToRem(55)};
-  }
-
-  @media (max-width: ${pixelToRem(1200)}) {
-    position: relative;
-    order: 4;
-    width: ${pixelToRem(472)};
-    height: ${pixelToRem(600)};
-    left: 0;
   }
 `;
 

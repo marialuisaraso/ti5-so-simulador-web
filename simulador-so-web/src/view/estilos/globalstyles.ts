@@ -15,14 +15,6 @@ body{
   font-family: "Montserrat", sans-serif;
   -webkit-font-smoothing: antialiased;
   background-color: var(--background);
-  
-  @media ${device.mobile} {
-    background: url("/images/stars-mobile.png");
-  }
-
-  @media ${device.tablet} {
-    background: url("/images/stars-mobile.png");
-  }
  }
 
 :root {
