@@ -28,7 +28,7 @@ function App() {
 
         <SimulatorTitle>GERÊNCIA DE PROCESSOS</SimulatorTitle>
         <SimulatorCanvas>
-            <CanvasButton text="NOVO PROCESSO" />
+            <CanvasButton text="NOVO" />
             <CanvasButton text="PAUSAR" />
             <CanvasButton text="FINALIZAR" />
         </SimulatorCanvas>
