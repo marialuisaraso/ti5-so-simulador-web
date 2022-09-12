@@ -10,6 +10,9 @@ export const GlobalStyles = createGlobalStyle`
   box-sizing: border-box;
  }
 
+html {
+    scroll-behavior: smooth;
+ }
 
 body{
   font-family: "Montserrat", sans-serif;

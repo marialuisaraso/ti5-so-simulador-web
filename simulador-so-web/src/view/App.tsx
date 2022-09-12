@@ -22,11 +22,13 @@ function App() {
           <FirstTitle>Finalmente é possível!</FirstTitle>
           <SecondTitle>Simule um sistema operacional multicore de maneira simples e gráfica <span>.</span></SecondTitle>
           <DivButton>
-            <Button text="COMEÇAR" fullWidth />
+            <a href="#simulador">
+              <Button text="COMEÇAR" fullWidth />
+            </a>
           </DivButton>
         </Main>
 
-        <SimulatorTitle>GERÊNCIA DE PROCESSOS</SimulatorTitle>
+        <SimulatorTitle id ='simulador'>GERÊNCIA DE PROCESSOS</SimulatorTitle>
         <SimulatorCanvas>
             <CanvasButton text="NOVO" />
             <CanvasButton text="PAUSAR" />
@@ -54,7 +56,7 @@ function App() {
             <DivFooterMenu>
               <ul>
                 <li><a href="/">Voltar para o topo</a></li>
-                <li><a href="/">Começar</a></li>
+                <li><a href="#simulador">Começar</a></li>
               </ul>
             </DivFooterMenu>
           </DivFooterBottom>
