@@ -11,7 +11,7 @@ function App() {
 
   return (
     <>
-      <Container flex='column' margin={pixelToRem(24, 112, 50)}>
+      <Container flex='column' margin={pixelToRem(24, 112, 50)} id ='topo'>
         <GlobalStyles />
 
         <Header>
@@ -55,7 +55,7 @@ function App() {
 
             <DivFooterMenu>
               <ul>
-                <li><a href="/">Voltar para o topo</a></li>
+                <li><a href="#topo">Voltar para o topo</a></li>
                 <li><a href="#simulador">Começar</a></li>
               </ul>
             </DivFooterMenu>
