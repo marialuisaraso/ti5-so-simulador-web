@@ -2,8 +2,8 @@ export class Queue<T> {
     length: number = 10;
     items: Array<Array<T>>;
 
-    constructor(lenght?: number) {
-        this.length = lenght ?? this.length;
+    constructor(length?: number) {
+        this.length = length ?? this.length;
         this.items = Array.from(Array(this.length), () => new Array<T>());
     }
 
