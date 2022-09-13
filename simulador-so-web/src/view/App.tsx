@@ -1,29 +1,63 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { main } from '../simulator/main';
+import { GlobalStyles } from './estilos/globalstyles'
+
+import {
+  Container, Header, LogoSuperior, LogoInferior, Main, FirstTitle, SecondTitle, SimulatorTitle, Subtitle, DivButton, SecondSubTitle, TextLogo, DivLogo, DivLogoFooter, SectionFooter, DivImageSmoke, DivFooterBottom, DivFooterMenu, SimulatorCanvas
+} from './estilos/styles'
+
+import { Button, CanvasButton1, CanvasButton2}  from './components/Button'
+import pixelToRem from './utils/pxToRem'
 
 function App() {
-  React.useEffect(()=>{
-    main();
-  },[])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Container flex='column' margin={pixelToRem(24, 112, 50)} id ='topo'>
+        <GlobalStyles />
+
+        <Header>
+          <LogoSuperior />
+        </Header>
+
+        <Main>
+          <FirstTitle>Finalmente é possível!</FirstTitle>
+          <SecondTitle>Simule um sistema operacional multicore de maneira simples e gráfica <span>.</span></SecondTitle>
+          <DivButton>
+            <a href="#simulador">
+              <Button text="COMEÇAR" fullWidth />
+            </a>
+          </DivButton>
+        </Main>
+
+        <SimulatorTitle id ='simulador'>GERÊNCIA DE PROCESSOS</SimulatorTitle>
+        <SimulatorCanvas>
+            <CanvasButton1 text="NOVO" />
+            <CanvasButton1 text="PAUSAR" />
+            <CanvasButton1 text="FINALIZAR" />
+        </SimulatorCanvas>
+
+        <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
+        <SimulatorCanvas>
+            <CanvasButton2 text="APLICAR ALG. 1" />
+            <CanvasButton2 text="APLICAR ALG. 2" />
+        </SimulatorCanvas>
+
+      </Container>
+
+        <SectionFooter>
+          <DivFooterBottom>
+            <LogoInferior />
+
+            <DivFooterMenu>
+              
+              <ul>
+                <li><a href="#topo">Voltar para o topo</a></li>
+                <li><a href="#simulador">Começar</a></li>
+              </ul>
+            </DivFooterMenu>
+          </DivFooterBottom>
+        </SectionFooter>
+    </>
+
   );
 }
 
