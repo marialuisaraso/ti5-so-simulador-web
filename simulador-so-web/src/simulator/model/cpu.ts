@@ -10,6 +10,7 @@ export class CPU {
     roundRobinQuantum: number = 1000;
     contextChangeTime: number = 10;
     clockSpeed: number = 100;
+    active: boolean = true;
 
     // TODO update initial values
     constructor(readyQueue?: Queue<Process>) {
@@ -29,10 +30,15 @@ export class CPU {
         );
     }
 
+    async stop() {
+        this.active = false;
+    }
+
     async start(): Promise<void> {
-        for (let i = 0; i < 3; i++) {
+        this.active = true;
+        while (this.active) {
             await this.executeJob();
-            console.log(i, this.readyQueue.toString());
+            console.log(this.readyQueue.toString());
         }
     }
 }
