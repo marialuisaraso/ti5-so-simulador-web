@@ -1,4 +1,6 @@
 {
     "editor.formatOnPaste": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "prettier.printWidth": 120,
+    "prettier.arrowParens": "avoid"
 }

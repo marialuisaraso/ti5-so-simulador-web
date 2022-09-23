@@ -12,5 +12,13 @@
     "singleQuote": true,
     "tabWidth": 4,
     "trailingComma": "es5",
-    "useTabs": false
+    "useTabs": false,
+    "overrides": [
+        {
+            "files": ["*.tsx"],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
 }

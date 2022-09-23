@@ -21,6 +21,7 @@ export class Queue<T> {
 
     getFirst(): T | null {
         const filledLevel = this.items.find(e => e.length > 0);
+
         if (filledLevel === undefined) return null;
         else return filledLevel.shift() as T;
     }
