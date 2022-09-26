@@ -20,13 +20,19 @@ export class CPU {
 
     async executeJob(): Promise<void> {
         this.runningJob = this.readyQueue.getFirst();
+        if (this.runningJob === null) {
+            this.stop();
+            return;
+        }
+        const job: Process = this.runningJob;
+        const execTime = job.determineExecTime(this.roundRobinQuantum);
         await new Promise<void>(resolve =>
             setTimeout(() => {
-                (this.runningJob as Process).ucpTime += this.roundRobinQuantum;
-                this.readyQueue.push(this.runningJob as Process, this.runningJob?.priority);
+                job.ucpTime += execTime;
+                if (job.ucpTime !== job.executionSize) this.readyQueue.push(job, job.priority);
                 this.runningJob = null;
                 resolve();
-            }, 1000)
+            }, execTime)
         );
     }
 

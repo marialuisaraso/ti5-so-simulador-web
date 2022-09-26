@@ -5,9 +5,9 @@ import { Process } from './model/process';
 var cpu: CPU;
 export function main() {
     let q = new Queue<Process>();
-    q.push(new Process(10));
-    q.push(new Process(20));
-    q.push(new Process(10, 4, 1), 1);
+    q.push(new Process(10000));
+    q.push(new Process(20000));
+    q.push(new Process(1000, 4, 1), 1);
     // console.log(`main start`);
     cpu = new CPU(q);
     console.log(q);

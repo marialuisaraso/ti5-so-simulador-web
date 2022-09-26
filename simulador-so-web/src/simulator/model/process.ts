@@ -19,4 +19,10 @@ export class Process {
     toString(): string {
         return `Process_${this.pId}(${this.executionSize}, ${this.memorySize}, ${this.ucpTime}, ${this.priority})`;
     }
+
+    determineExecTime(timeAvailable: number): number {
+        if (this.executionSize === null || this.executionSize > this.ucpTime + timeAvailable)
+            return timeAvailable;
+        else return this.executionSize - this.ucpTime;
+    }
 }
