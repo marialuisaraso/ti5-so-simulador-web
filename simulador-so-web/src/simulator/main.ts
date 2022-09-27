@@ -2,14 +2,14 @@ import { Queue } from './model/queue';
 import { CPU } from './model/cpu';
 import { Process } from './model/process';
 
-var cpu: CPU;
-export function main() {
+export var cpu: CPU;
+export function main(hook?: Function) {
     let q = new Queue<Process>();
     q.push(new Process(10000));
     q.push(new Process(20000));
     q.push(new Process(1000, 4, 1), 1);
     // console.log(`main start`);
-    cpu = new CPU(q);
+    cpu = new CPU(q, hook);
     console.log(q);
     // for (let i = 0; i < 3; i++)
     // cpu.executeJob().then(e => console.log(`aqui`));

@@ -11,9 +11,11 @@ export class CPU {
     contextChangeTime: number = 10;
     clockSpeed: number = 100;
     active: boolean = true;
+    hook: Function = () => {};
 
     // TODO update initial values
-    constructor(readyQueue?: Queue<Process>) {
+    constructor(readyQueue?: Queue<Process>, hook?: Function) {
+        this.hook = hook ? hook : () => {};
         this.readyQueue = readyQueue ?? new Queue<Process>();
         this.memory = new Memory();
     }
@@ -38,12 +40,14 @@ export class CPU {
 
     async stop() {
         this.active = false;
+        this.hook();
     }
 
     async start(): Promise<void> {
         this.active = true;
         while (this.active) {
             await this.executeJob();
+            this.hook();
             console.log(this.readyQueue.toString());
         }
     }

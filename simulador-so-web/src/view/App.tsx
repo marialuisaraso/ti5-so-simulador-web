@@ -24,10 +24,27 @@ import {
 
 import { Button, CanvasButton1, CanvasButton2 } from './components/Button';
 import pixelToRem from './utils/pxToRem';
-import { main, start, stop } from '../simulator/main';
+import { main, start, stop, cpu } from '../simulator/main';
+import React from 'react';
+
+function useForceUpdate() {
+  const [value, setValue] = React.useState(0); // integer state
+  return () => setValue(value => value + 1); // update state to force render
+  // An function that increment 👆🏻 the previous state like here
+  // is better than directly setting `value + 1`
+}
 
 function App() {
-  main();
+  const forceUpdate = useForceUpdate();
+  const [cpuState, setCpuState] = React.useState(cpu);
+  // const forceUpdate = React.useCallback(() => updateState(undefined), []);
+  React.useEffect(() => {
+    main(forceUpdate);
+  }, []);
+
+  React.useEffect(() => {
+    setCpuState(cpu);
+  });
 
   return (
     <>
@@ -59,13 +76,14 @@ function App() {
 
         <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
         <SimulatorCanvas>
-          <div onClick={start}>
+          <div onClick={() => start()}>
             <CanvasButton2 text="INICIAR" />
           </div>
           <div onClick={stop}>
             <CanvasButton2 text="PARAR" />
           </div>
         </SimulatorCanvas>
+        <div>{JSON.stringify(cpu)}</div>
       </Container>
 
       <SectionFooter>
