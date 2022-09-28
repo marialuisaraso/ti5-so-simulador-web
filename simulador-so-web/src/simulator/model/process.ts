@@ -4,7 +4,7 @@ export class Process {
     pId: number;
     executionSize: number | null = null; // null significa infinito
     memorySize: number = 4;
-    ucpTime: number = 0;
+    cpuTime: number = 0;
     priority: number = 0;
 
     constructor(executionSize?: number | null, memorySize?: number, priority?: number) {
@@ -17,12 +17,12 @@ export class Process {
     }
 
     toString(): string {
-        return `Process_${this.pId}(${this.executionSize}, ${this.memorySize}, ${this.ucpTime}, ${this.priority})`;
+        return `Process_${this.pId}(${this.executionSize}, ${this.memorySize}, ${this.cpuTime}, ${this.priority})`;
     }
 
     determineExecTime(timeAvailable: number): number {
-        if (this.executionSize === null || this.executionSize > this.ucpTime + timeAvailable)
+        if (this.executionSize === null || this.executionSize > this.cpuTime + timeAvailable)
             return timeAvailable;
-        else return this.executionSize - this.ucpTime;
+        else return this.executionSize - this.cpuTime;
     }
 }

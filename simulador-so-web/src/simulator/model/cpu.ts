@@ -30,8 +30,8 @@ export class CPU {
         const execTime = job.determineExecTime(this.roundRobinQuantum);
         await new Promise<void>(resolve =>
             setTimeout(() => {
-                job.ucpTime += execTime;
-                if (job.ucpTime !== job.executionSize) this.readyQueue.push(job, job.priority);
+                job.cpuTime += execTime;
+                if (job.cpuTime !== job.executionSize) this.readyQueue.push(job, job.priority);
                 this.runningJob = null;
                 resolve();
             }, execTime)
@@ -49,7 +49,6 @@ export class CPU {
         while (this.active) {
             await this.executeJob();
             this.hook();
-            console.log(this.readyQueue.toString());
         }
     }
 
