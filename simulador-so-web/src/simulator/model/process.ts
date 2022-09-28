@@ -7,7 +7,7 @@ export class Process {
     ucpTime: number = 0;
     priority: number = 0;
 
-    constructor(executionSize?: number, memorySize?: number, priority?: number) {
+    constructor(executionSize?: number | null, memorySize?: number, priority?: number) {
         this.pId = Process.nextId;
         Process.nextId++;
 

@@ -121,7 +121,7 @@ export const SimulatorTitle = styled.div`
 
 export const SimulatorCanvas = styled.div`
   width: 100%;
-  height: ${pixelToRem(800)} ;
+  height: ${pixelToRem(200)} ;
   border: 5px solid; /* As 4 bordas sólidas com 5px de espessura */
   border-color: var(--roxo); 
   margin-top: 20px;

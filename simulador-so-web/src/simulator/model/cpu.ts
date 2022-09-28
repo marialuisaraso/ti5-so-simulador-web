@@ -10,7 +10,7 @@ export class CPU {
     roundRobinQuantum: number = 1000;
     contextChangeTime: number = 10;
     clockSpeed: number = 100;
-    active: boolean = true;
+    active: boolean = false;
     hook: Function = () => {};
 
     // TODO update initial values
@@ -45,10 +45,22 @@ export class CPU {
 
     async start(): Promise<void> {
         this.active = true;
+        this.hook();
         while (this.active) {
             await this.executeJob();
             this.hook();
             console.log(this.readyQueue.toString());
         }
+    }
+
+    public addProcess(executionSize?: number | null, memorySize?: number, priority?: number) {
+        this.readyQueue.push(
+            new Process(
+                (executionSize = executionSize),
+                (memorySize = memorySize),
+                (priority = priority)
+            )
+        );
+        this.hook();
     }
 }

@@ -69,14 +69,20 @@ function App() {
 
         <SimulatorTitle id="simulador">GERÊNCIA DE PROCESSOS</SimulatorTitle>
         <SimulatorCanvas>
-          <CanvasButton1 text="NOVO" />
-          <CanvasButton1 text="PAUSAR" />
-          <CanvasButton1 text="FINALIZAR" />
+          <div onClick={() => cpu.addProcess(10000, 30)}>
+            <CanvasButton1 text="NOVO" />
+          </div>
+          <div onClick={() => cpu.addProcess(null, 4, 4)}>
+            <CanvasButton1 text="PAUSAR" />
+          </div>
+          <div onClick={() => cpu.addProcess(100000)}>
+            <CanvasButton1 text="FINALIZAR" />
+          </div>
         </SimulatorCanvas>
 
         <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
         <SimulatorCanvas>
-          <div onClick={() => start()}>
+          <div onClick={start}>
             <CanvasButton2 text="INICIAR" />
           </div>
           <div onClick={stop}>
