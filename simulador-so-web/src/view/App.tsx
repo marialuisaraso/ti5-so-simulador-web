@@ -61,7 +61,7 @@ function App() {
             Simule um sistema operacional multicore de maneira simples e gráfica <span>.</span>
           </SecondTitle>
           <DivButton>
-            <a href="#simulador">
+            <a href='#simulador'>
               <Button text="COMEÇAR" fullWidth />
             </a>
           </DivButton>
