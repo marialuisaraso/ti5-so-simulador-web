@@ -10,12 +10,12 @@ interface GalleryFlexContainerProps {
     padding?: string;
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     justifyContent?:
-        | 'flex-start'
-        | 'flex-end'
-        | 'center'
-        | 'space-between'
-        | 'space-around'
-        | 'space-evenly';
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly';
 }
 
 export const Container = styled.div<GalleryFlexContainerProps>`
@@ -121,7 +121,7 @@ export const SimulatorTitle = styled.div`
 
 export const SimulatorCanvas = styled.div`
   width: 100%;
-  height: ${pixelToRem(200)} ;
+  height: ${pixelToRem(300)} ;
   border: 5px solid; /* As 4 bordas sólidas com 5px de espessura */
   border-color: var(--roxo); 
   margin-top: 20px;
@@ -143,6 +143,19 @@ export const Subtitle = styled.p`
     color: var(--gray-05);
     font: var(--font-heading-3);
     max-width: ${pixelToRem(728)};
+
+    @media ${device.mobile} {
+        padding: ${pixelToRem(16, 0, 32, 0)};
+        text-align: center;
+        max-width: ${pixelToRem(307)};
+    }
+`;
+
+export const MenuTitles = styled.p`
+    color: var(--gray-05);
+    font: var(--text-4);
+    max-width: ${pixelToRem(728)};
+    
 
     @media ${device.mobile} {
         padding: ${pixelToRem(16, 0, 32, 0)};

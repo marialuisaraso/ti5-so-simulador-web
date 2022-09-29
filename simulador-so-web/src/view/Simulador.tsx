@@ -21,6 +21,50 @@ import CloseIcon from '@mui/icons-material/Close';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import DiscreteSlider from './slider';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { GlobalStyles } from './estilos/globalstyles';
+
+import {
+  Container,
+  Header,
+  LogoSuperior,
+  LogoInferior,
+  Main,
+  FirstTitle,
+  SecondTitle,
+  SimulatorTitle,
+  Subtitle,
+  DivButton,
+  SecondSubTitle,
+  TextLogo,
+  DivLogo,
+  DivLogoFooter,
+  SectionFooter,
+  DivImageSmoke,
+  DivFooterBottom,
+  DivFooterMenu,
+  SimulatorCanvas,
+  MenuTitles
+} from './estilos/styles';
+
+import { Button, CanvasButton1, CanvasButton2 } from './components/Button';
+import pixelToRem from './utils/pxToRem';
+import { main, start, stop, cpu } from '../simulator/main';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+});
+
+function useForceUpdate() {
+  const [value, setValue] = React.useState(0); // integer state
+  return () => setValue(value => value + 1); // update state to force render
+  // An function that increment 👆🏻 the previous state like here
+  // is better than directly setting `value + 1`
+}
+
 
 const drawerWidth = 240;
 
@@ -94,6 +138,17 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
+  const forceUpdate = useForceUpdate();
+  const [cpuState, setCpuState] = React.useState(cpu);
+  // const forceUpdate = React.useCallback(() => updateState(undefined), []);
+  React.useEffect(() => {
+    main(forceUpdate);
+  }, []);
+
+  React.useEffect(() => {
+    setCpuState(cpu);
+  });
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -106,120 +161,121 @@ export default function MiniDrawer() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            SIMULADOR SO WEB
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {['ADICIONAR PROCESSO', 'SUSPENDER PROCESSO', 'EXCLUIR PROCESSO'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+    <ThemeProvider theme={darkTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: 'none' }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Subtitle>
+              SIMULADOR DE SISTEMA OPERACIONAL MULTICORE
+            </Subtitle>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {['ADICIONAR PROCESSO', 'SUSPENDER PROCESSO', 'EXCLUIR PROCESSO'].map((text, index) => (
+              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                  {index === 0 ? <AddIcon /> : null}
-                  {index === 1 ? <StopCircleIcon /> : null}
-                  {index === 2 ? <CloseIcon /> : null}
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 2 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {index === 0 ? <AddIcon /> : null}
+                    {index === 1 ? <StopCircleIcon /> : null}
+                    {index === 2 ? <DeleteIcon /> : null}
 
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['TEMPO ROUND-ROBIN'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+                  </ListItemIcon>
+                  <MenuTitles>
+                    {open ? text : null}
+                  </MenuTitles>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {['TEMPO ROUND-ROBIN'].map((text, index) => (
+              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                {index === 0 ? <AccessTimeIcon /> : null}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <DiscreteSlider />
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 2 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {index === 0 ? <AccessTimeIcon /> : null}
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          {open ? <DiscreteSlider /> : null}
 
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <Container flex="column" margin={pixelToRem(70, 112, 50)} id="topo">
+            <SimulatorTitle id="simulador">GERÊNCIA DE PROCESSOS</SimulatorTitle>
+            <SimulatorCanvas>
+              <div onClick={() => cpu.addProcess(10000, 30)}>
+                <CanvasButton1 text="NOVO" />
+              </div>
+              <div onClick={() => cpu.addProcess(null, 4, 4)}>
+                <CanvasButton1 text="PAUSAR" />
+              </div>
+              <div onClick={() => cpu.addProcess(100000)}>
+                <CanvasButton1 text="FINALIZAR" />
+              </div>
+            </SimulatorCanvas>
+
+            <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
+            <SimulatorCanvas>
+              <div onClick={start}>
+                <CanvasButton2 text="INICIAR" />
+              </div>
+              <div onClick={stop}>
+                <CanvasButton2 text="PARAR" />
+              </div>
+            </SimulatorCanvas>
+            <div>{JSON.stringify(cpu)}</div>
+          </Container>
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 }
 
