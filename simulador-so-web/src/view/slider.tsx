@@ -1,6 +1,6 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import { Subtitle } from './estilos/styles';
 
 function valuetext(value: number) {
   return `${value}`;

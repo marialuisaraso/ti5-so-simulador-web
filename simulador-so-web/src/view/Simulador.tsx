@@ -6,7 +6,6 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -17,40 +16,41 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
-import DiscreteSlider from './slider';
+import DiscreteSlider from './Slider';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { GlobalStyles } from './estilos/globalstyles';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 
 import {
   Container,
-  Header,
-  LogoSuperior,
-  LogoInferior,
-  Main,
-  FirstTitle,
-  SecondTitle,
   SimulatorTitle,
   Subtitle,
-  DivButton,
-  SecondSubTitle,
-  TextLogo,
-  DivLogo,
-  DivLogoFooter,
-  SectionFooter,
-  DivImageSmoke,
-  DivFooterBottom,
-  DivFooterMenu,
   SimulatorCanvas,
   MenuTitles
 } from './estilos/styles';
 
-import { Button, CanvasButton1, CanvasButton2 } from './components/Button';
 import pixelToRem from './utils/pxToRem';
 import { main, start, stop, cpu } from '../simulator/main';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Backdrop from '@mui/material/Backdrop';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const darkTheme = createTheme({
   palette: {
@@ -137,7 +137,28 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+const checkMenuText = (text: string) => {
+  if (text === 'ADICIONAR PROCESSO') {
+    return cpu.addProcess(10000, 30)
+  }
+  if (text === 'SUSPENDER PROCESSO') {
+    return cpu.addProcess(null, 4, 4)
+  }
+  if (text === 'INICIAR') {
+    return start
+  }
+  if (text === 'PARAR') {
+    return stop
+  }
+  return cpu.addProcess(100000)
+}
+
+
 export default function MiniDrawer() {
+  const [open, setOpen] = React.useState(false);
+  const [openModal, setModalOpen] = React.useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
   const forceUpdate = useForceUpdate();
   const [cpuState, setCpuState] = React.useState(cpu);
   // const forceUpdate = React.useCallback(() => updateState(undefined), []);
@@ -150,7 +171,6 @@ export default function MiniDrawer() {
   });
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -183,6 +203,28 @@ export default function MiniDrawer() {
             </Subtitle>
           </Toolbar>
         </AppBar>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={openModal}
+          onClose={handleModalClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={openModal}>
+            <Box sx={style}>
+              <Typography id="transition-modal-title" variant="h6" component="h2">
+                Text in a modal
+              </Typography>
+              <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              </Typography>
+            </Box>
+          </Fade>
+        </Modal>
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>
@@ -191,7 +233,8 @@ export default function MiniDrawer() {
           </DrawerHeader>
           <Divider />
           <List>
-            {['ADICIONAR PROCESSO', 'SUSPENDER PROCESSO', 'EXCLUIR PROCESSO'].map((text, index) => (
+            {open ? <Subtitle>SIMULAÇÃO</Subtitle> : null}
+            {['Iniciar', 'Parar'].map((text, index) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                 <ListItemButton
                   sx={{
@@ -199,6 +242,7 @@ export default function MiniDrawer() {
                     justifyContent: open ? 'initial' : 'center',
                     px: 2.5,
                   }}
+                  onClick={() => checkMenuText(text)}
                 >
                   <ListItemIcon
                     sx={{
@@ -207,9 +251,8 @@ export default function MiniDrawer() {
                       justifyContent: 'center',
                     }}
                   >
-                    {index === 0 ? <AddIcon /> : null}
-                    {index === 1 ? <StopCircleIcon /> : null}
-                    {index === 2 ? <DeleteIcon /> : null}
+                    {index === 0 ? <PlayCircleOutlineIcon onClick={start} /> : null}
+                    {index === 1 ? <StopCircleIcon onClick={stop} /> : null}
 
                   </ListItemIcon>
                   <MenuTitles>
@@ -221,9 +264,42 @@ export default function MiniDrawer() {
           </List>
           <Divider />
           <List>
-            {['TEMPO ROUND-ROBIN'].map((text, index) => (
+            {open ? <Subtitle>PROCESSOS</Subtitle> : null}
+            {['Adicionar', 'Suspender', 'Excluir'].map((text, index) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                 <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                  }}
+                  onClick={() => checkMenuText(text)}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 2 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {index === 0 ? <AddIcon onClick={() => handleModalOpen} /> : null}
+                    {index === 1 ? <HourglassTopIcon onClick={() => cpu.addProcess(null, 4, 4)} /> : null}
+                    {index === 2 ? <DeleteIcon onClick={() => cpu.addProcess(100000)} /> : null}
+
+                  </ListItemIcon>
+                  <MenuTitles>
+                    {open ? text : null}
+                  </MenuTitles>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {open ? <Subtitle>ROUND-ROBIN</Subtitle> : null}
+            {['Ajustar tempo'].map((text, index) => (
+              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                <ListItem
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? 'initial' : 'center',
@@ -240,7 +316,7 @@ export default function MiniDrawer() {
                     {index === 0 ? <AccessTimeIcon /> : null}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
+                </ListItem>
               </ListItem>
             ))}
           </List>
@@ -251,25 +327,10 @@ export default function MiniDrawer() {
           <Container flex="column" margin={pixelToRem(70, 112, 50)} id="topo">
             <SimulatorTitle id="simulador">GERÊNCIA DE PROCESSOS</SimulatorTitle>
             <SimulatorCanvas>
-              <div onClick={() => cpu.addProcess(10000, 30)}>
-                <CanvasButton1 text="NOVO" />
-              </div>
-              <div onClick={() => cpu.addProcess(null, 4, 4)}>
-                <CanvasButton1 text="PAUSAR" />
-              </div>
-              <div onClick={() => cpu.addProcess(100000)}>
-                <CanvasButton1 text="FINALIZAR" />
-              </div>
             </SimulatorCanvas>
 
             <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
             <SimulatorCanvas>
-              <div onClick={start}>
-                <CanvasButton2 text="INICIAR" />
-              </div>
-              <div onClick={stop}>
-                <CanvasButton2 text="PARAR" />
-              </div>
             </SimulatorCanvas>
             <div>{JSON.stringify(cpu)}</div>
           </Container>
