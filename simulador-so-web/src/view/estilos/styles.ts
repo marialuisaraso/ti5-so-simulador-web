@@ -121,11 +121,11 @@ export const SimulatorTitle = styled.div`
 
 export const SimulatorCanvas = styled.div`
   width: 100%;
-  height: ${pixelToRem(300)} ;
-  border: 5px solid; /* As 4 bordas sólidas com 5px de espessura */
+  height: ${pixelToRem(320)} ;
+  border: 2px solid; 
   border-color: var(--roxo); 
-  margin-top: 20px;
-  margin-BOTTOM: 20px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,7 +140,7 @@ export const SimulatorCanvas = styled.div`
 `;
 
 export const Subtitle = styled.p`
-    color: var(--gray-05);
+    color: var(--roxo) !important;
     font: var(--font-heading-3);
     max-width: ${pixelToRem(728)};
 
