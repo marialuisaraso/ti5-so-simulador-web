@@ -25,4 +25,8 @@ export class Queue<T> {
         if (filledLevel === undefined) return null;
         else return filledLevel.shift() as T;
     }
+
+    find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined {
+        return this.items.flat().find(predicate);
+    }
 }

@@ -18,7 +18,7 @@ import ListItemText from '@mui/material/ListItemText';
 import AddIcon from '@mui/icons-material/Add';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
-import DiscreteSlider from './Slider';
+import DiscreteSlider from './slider';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
@@ -105,7 +105,7 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: prop => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
@@ -122,7 +122,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })(
   ({ theme, open }) => ({
     width: drawerWidth,
     flexShrink: 0,
@@ -136,7 +136,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
       ...closedMixin(theme),
       '& .MuiDrawer-paper': closedMixin(theme),
     }),
-  }),
+  })
 );
 
 //MENU(DRAWER) LATERAL
@@ -304,11 +304,8 @@ export default function MiniDrawer() {
                   >
                     {index === 0 ? <PlayCircleOutlineIcon onClick={start} /> : null}
                     {index === 1 ? <StopCircleIcon onClick={stop} /> : null}
-
                   </ListItemIcon>
-                  <MenuTitles>
-                    {open ? text : null}
-                  </MenuTitles>
+                  <MenuTitles>{open ? text : null}</MenuTitles>
                 </ListItemButton>
               </ListItem>
             ))}
@@ -341,9 +338,7 @@ export default function MiniDrawer() {
                     {index === 3 ? <FormatListBulletedIcon onClick={() => handleListModalOpen()} /> : null}
 
                   </ListItemIcon>
-                  <MenuTitles>
-                    {open ? text : null}
-                  </MenuTitles>
+                  <MenuTitles>{open ? text : null}</MenuTitles>
                 </ListItemButton>
               </ListItem>
             ))}
@@ -387,8 +382,7 @@ export default function MiniDrawer() {
             </SimulatorCanvas>
 
             <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
-            <SimulatorCanvas>
-            </SimulatorCanvas>
+            <SimulatorCanvas></SimulatorCanvas>
             <div>{JSON.stringify(cpu)}</div>
           </Container>
         </Box>
@@ -397,4 +391,3 @@ export default function MiniDrawer() {
     </ThemeProvider>
   );
 }
-

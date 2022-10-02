@@ -1,7 +1,4 @@
-export const RUN = 0;
-export const IO = 1;
-export const SUSPEND = 2;
-export const EXCLUDE = 3;
+import { processState } from './shared/processState';
 
 export class Process {
     static nextId: number = 1;
@@ -11,7 +8,7 @@ export class Process {
     memorySize: number = 4;
     cpuTime: number = 0;
     priority: number = 0;
-    boundTo: number = RUN;
+    state: processState = processState.New;
 
     constructor(
         executionSize?: number | null,
@@ -25,7 +22,6 @@ export class Process {
         this.executionSize = executionSize ?? null;
         this.memorySize = memorySize ?? 4;
         this.priority = priority ?? 0;
-        this.boundTo = boundTo ?? RUN;
     }
 
     toString(): string {
@@ -36,5 +32,52 @@ export class Process {
         if (this.executionSize === null || this.executionSize > this.cpuTime + timeAvailable)
             return timeAvailable;
         else return this.executionSize - this.cpuTime;
+    }
+
+    determineNextState(action?: string) {
+        // https://www.javatpoint.com/os-process-states
+
+        if (action === 'terminate') {
+            this.state = processState.Terminate;
+            return this.state;
+        }
+
+        if (this.state == processState.New) {
+            this.state = processState.Ready;
+        } else if (this.state == processState.Ready) {
+            if (action === 'run') {
+                this.state = processState.Run;
+            } else if (action === 'suspend') {
+                this.state = processState.ReadySuspended;
+            }
+        } else if (this.state == processState.Run) {
+            if (this.cpuTime >= (this.executionSize ?? Infinity)) {
+                this.state = processState.Completed;
+            }
+            if (false) {
+                // TODO determine when process will go to IO
+                this.state = processState.Wait;
+            } else {
+                this.state = processState.Ready;
+            }
+        } else if (this.state == processState.Wait) {
+            if (action === 'ioComplete') {
+                this.state = processState.Ready;
+            } else if (action === 'suspend') {
+                this.state = processState.WaitSuspended;
+            }
+        } else if (this.state == processState.ReadySuspended) {
+            if (action === 'wake') {
+                this.state = processState.Ready;
+            }
+        } else if (this.state == processState.WaitSuspended) {
+            if (action === 'wake') {
+                this.state = processState.Wait;
+            } else if (action === 'ioComplete') {
+                this.state = processState.ReadySuspended;
+            }
+        }
+
+        return this.state;
     }
 }
