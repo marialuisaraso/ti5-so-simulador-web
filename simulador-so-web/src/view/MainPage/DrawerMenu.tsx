@@ -1,17 +1,4 @@
-import {
-  CSSObject,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  styled,
-  Theme,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Divider, IconButton, List, Typography, useTheme } from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -24,57 +11,10 @@ import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AddIcon from '@mui/icons-material/Add';
 
 import { start, cpu, stop } from '../../simulator/main';
-import { MenuTitles } from '../estilos/styles';
 import DiscreteSlider from '../slider';
-
-const drawerWidth = 240;
-
-const openedMixin = (theme: Theme): CSSObject => ({
-  width: drawerWidth,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: 'hidden',
-});
-
-const closedMixin = (theme: Theme): CSSObject => ({
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
-  })
-);
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
+import DrawerItem from './DrawerComponents/DrawerItem';
+import Drawer from './DrawerComponents/Drawer';
+import DrawerHeader from './DrawerComponents/DrawerHeader';
 
 type AddProcessFormProps = {
   open: boolean;
@@ -129,28 +69,12 @@ const DrawerMenu = ({
           </Typography>
         ) : null}
         {['Iniciar', 'Parar'].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-              onClick={() => checkMenuText(text)}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 2 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                {index === 0 ? <PlayCircleOutlineIcon onClick={start} /> : null}
-                {index === 1 ? <StopCircleIcon onClick={stop} /> : null}
-              </ListItemIcon>
-              <MenuTitles>{open ? text : null}</MenuTitles>
-            </ListItemButton>
-          </ListItem>
+          <DrawerItem key={text} isOpen={open} text={text} action={() => checkMenuText(text)}>
+            <>
+              {index === 0 ? <PlayCircleOutlineIcon onClick={start} /> : null}
+              {index === 1 ? <StopCircleIcon onClick={stop} /> : null}
+            </>
+          </DrawerItem>
         ))}
       </List>
       <Divider />
@@ -163,34 +87,16 @@ const DrawerMenu = ({
           </Typography>
         ) : null}
         {['Adicionar', 'Suspender', 'Excluir', 'Listar'].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-              onClick={() => checkMenuText(text)}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 2 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                {index === 0 ? <AddIcon onClick={() => handleAddModalOpen()} /> : null}
-                {index === 1 ? (
-                  <HourglassTopIcon onClick={() => cpu.addProcess(null, 4, 4)} />
-                ) : null}
-                {index === 2 ? <DeleteIcon onClick={() => cpu.addProcess(100000)} /> : null}
-                {index === 3 ? (
-                  <FormatListBulletedIcon onClick={() => handleListModalOpen()} />
-                ) : null}
-              </ListItemIcon>
-              <MenuTitles>{open ? text : null}</MenuTitles>
-            </ListItemButton>
-          </ListItem>
+          <DrawerItem key={text} isOpen={open} text={text} action={() => checkMenuText(text)}>
+            <>
+              {index === 0 ? <AddIcon onClick={() => handleAddModalOpen()} /> : null}
+              {index === 1 ? <HourglassTopIcon onClick={() => cpu.addProcess(null, 4, 4)} /> : null}
+              {index === 2 ? <DeleteIcon onClick={() => cpu.addProcess(100000)} /> : null}
+              {index === 3 ? (
+                <FormatListBulletedIcon onClick={() => handleListModalOpen()} />
+              ) : null}
+            </>
+          </DrawerItem>
         ))}
       </List>
       <Divider />
@@ -205,26 +111,9 @@ const DrawerMenu = ({
           </Typography>
         ) : null}
         {['Ajustar tempo'].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-            <ListItem
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 2 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                {index === 0 ? <AccessTimeIcon /> : null}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItem>
-          </ListItem>
+          <DrawerItem key={text} isOpen={open} text={text} action={() => checkMenuText(text)}>
+            <>{index === 0 ? <AccessTimeIcon /> : null}</>
+          </DrawerItem>
         ))}
       </List>
       {open ? <DiscreteSlider /> : null}
