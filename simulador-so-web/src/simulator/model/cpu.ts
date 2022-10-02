@@ -56,6 +56,7 @@ export class CPU {
             const job = this.readyQueue.getFirst();
             if (!job) {
                 this.stop();
+                this.hook();
                 return;
             } else if (job.state === processState.Ready) {
                 job.determineNextState('run');
@@ -94,11 +95,13 @@ export class CPU {
     public suspendProcess(pId: number): void {
         const process = this.allProcess.find(e => e.pId === pId);
         if (process) process.determineNextState('suspend');
+        this.hook();
     }
 
     public wakeProcess(pId: number): void {
         let process = this.suspendedQueue.find(e => e.pId === pId);
         if (process) process.determineNextState('wake');
+        this.hook();
         // else {
         //     process = this.ioQueue.find(e => e.pId === pId);
         //     if (!process) return;
@@ -111,5 +114,6 @@ export class CPU {
     public excludeProcess(pId: number): void {
         const process = this.allProcess.find(e => e.pId === pId);
         if (process) process.determineNextState('terminate');
+        this.hook();
     }
 }

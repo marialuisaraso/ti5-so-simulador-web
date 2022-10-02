@@ -22,10 +22,12 @@ export class Process {
         this.executionSize = executionSize ?? null;
         this.memorySize = memorySize ?? 4;
         this.priority = priority ?? 0;
+
+        this.determineNextState();
     }
 
     toString(): string {
-        return `Process_${this.pId}(${this.executionSize}, ${this.memorySize}, ${this.cpuTime}, ${this.priority})`;
+        return `Process_${this.pId}(${this.executionSize}, ${this.memorySize}, ${this.cpuTime}, ${this.priority}) - ${this.state}`;
     }
 
     determineExecTime(timeAvailable: number): number {

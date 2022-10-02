@@ -26,7 +26,7 @@ export class Queue<T> {
         else return filledLevel.shift() as T;
     }
 
-    find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined {
-        return this.items.flat().find(predicate);
+    find(predicate: (value: T, index: number, obj: T[]) => boolean, thisArg?: any): T | undefined {
+        return this.items.flat().find(predicate, thisArg);
     }
 }
