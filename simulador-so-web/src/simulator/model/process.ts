@@ -1,3 +1,8 @@
+export const RUN = 0;
+export const IO = 1;
+export const SUSPEND = 2;
+export const EXCLUDE = 3;
+
 export class Process {
     static nextId: number = 1;
 
@@ -6,14 +11,21 @@ export class Process {
     memorySize: number = 4;
     cpuTime: number = 0;
     priority: number = 0;
+    boundTo: number = RUN;
 
-    constructor(executionSize?: number | null, memorySize?: number, priority?: number) {
+    constructor(
+        executionSize?: number | null,
+        memorySize?: number,
+        priority?: number,
+        boundTo?: number
+    ) {
         this.pId = Process.nextId;
         Process.nextId++;
 
         this.executionSize = executionSize ?? null;
         this.memorySize = memorySize ?? 4;
         this.priority = priority ?? 0;
+        this.boundTo = boundTo ?? RUN;
     }
 
     toString(): string {
