@@ -8,6 +8,7 @@ export function main(hook?: Function) {
     let q = new Queue<Process>();
 
     cpu = new CPU({ readyQueue: q, hook });
+    if (hook) hook();
     // io = new CPU({readyQueue:cpu.ioQueue, hook})
 }
 

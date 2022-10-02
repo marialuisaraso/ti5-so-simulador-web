@@ -7,50 +7,33 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import { main, cpu } from '../simulator/main';
+// import { main, cpu } from '../simulator/main';
 import { Container, SimulatorTitle, SimulatorCanvas } from './estilos/styles';
+import { darkTheme } from './estilos/globalstyles';
 import pixelToRem from './utils/pxToRem';
 import AddProcessForm from './MainPage/AddProcessForm';
-import ProcessList from './MainPage/ProcessList';
+import ProcessModal from './MainPage/ProcessModal';
 import DrawerMenu from './MainPage/DrawerMenu';
-import { darkTheme } from './estilos/globalstyles';
 import AppBar from './MainPage/AppBar';
+import ProcessesDisplay from './MainPage/ProcessesDisplay';
+import { cpuContext } from './context/CpuContext';
 
-function useForceUpdate() {
-  const [value, setValue] = React.useState(0); // integer state
-  return () => setValue(value => value + 1); // update state to force render
-  // An function that increment 👆🏻 the previous state like here
-  // is better than directly setting `value + 1`
-}
+// function useForceUpdate() {
+//   const [, setValue] = React.useState(0); // integer state
+//   return () => setValue(value => value + 1); // update state to force render
+// }
 
 export default function Simulador() {
+  const { cpu, forceUpdate } = React.useContext(cpuContext);
+
   // ESTADO DO MENU(DRAWER) LATERAL
   const [open, setOpen] = React.useState(false);
 
   // ESTADO DO MODAL DE ADICIONAR PROCESSO
   const [openAddModal, setAddModalOpen] = React.useState(false);
-  const handleAddModalOpen = () => setAddModalOpen(true);
 
   // ESTADO DO MODAL DE LISTAR PROCESSOS
   const [openListModal, setListModalOpen] = React.useState(false);
-  const handleListModalOpen = () => setListModalOpen(true);
-
-  // ESTADO DA CPU
-  const forceUpdate = useForceUpdate();
-  const [cpuState, setCpuState] = React.useState(cpu);
-
-  // const forceUpdate = React.useCallback(() => updateState(undefined), []);
-  React.useEffect(() => {
-    main(forceUpdate);
-  }, []);
-
-  React.useEffect(() => {
-    setCpuState(cpu);
-  });
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -61,7 +44,7 @@ export default function Simulador() {
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={handleDrawerOpen}
+              onClick={() => setOpen(true)}
               edge="start"
               sx={{
                 marginRight: 5,
@@ -73,23 +56,14 @@ export default function Simulador() {
             <Typography>SIMULADOR DE SISTEMA OPERACIONAL MULTICORE</Typography>
           </Toolbar>
         </AppBar>
-        {/* MODAL QUE ABRE EM ADICIONAR PROCESSO */}
-        <AddProcessForm open={openAddModal} handleClose={setAddModalOpen} />
-        {/* MODAL QUE ABRE EM LISTAR PROCESSOS */}
-        <ProcessList open={openListModal} handleClose={setListModalOpen} />
-
-        <DrawerMenu
-          open={open}
-          handleClose={setOpen}
-          handleAddModalOpen={handleAddModalOpen}
-          handleListModalOpen={handleListModalOpen}
-        />
 
         {/* FORA DO MENU(DRAWER) - CANVAS DO SIMULADOR EM SI */}
         <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
           <Container flex="column" margin={pixelToRem(70, 112, 50)}>
             <SimulatorTitle>GERÊNCIA DE PROCESSOS</SimulatorTitle>
-            <SimulatorCanvas></SimulatorCanvas>
+            <SimulatorCanvas>
+              <ProcessesDisplay />
+            </SimulatorCanvas>
 
             <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
             <SimulatorCanvas></SimulatorCanvas>
@@ -97,6 +71,17 @@ export default function Simulador() {
           </Container>
         </Box>
       </Box>
+      {/* MODAL QUE ABRE EM ADICIONAR PROCESSO */}
+      <AddProcessForm open={openAddModal} handleClose={setAddModalOpen} />
+      {/* MODAL QUE ABRE EM LISTAR PROCESSOS */}
+      <ProcessModal open={openListModal} handleClose={setListModalOpen} />
+
+      <DrawerMenu
+        open={open}
+        handleClose={setOpen}
+        handleAddModalOpen={() => setAddModalOpen(true)}
+        handleListModalOpen={() => setListModalOpen(true)}
+      />
     </ThemeProvider>
   );
 }

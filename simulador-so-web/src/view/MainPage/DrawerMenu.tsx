@@ -9,11 +9,13 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AddIcon from '@mui/icons-material/Add';
 
-import { start, cpu, stop } from '../../simulator/main';
+import { start, stop } from '../../simulator/main';
 import DiscreteSlider from '../slider';
 import DrawerItem from './DrawerComponents/DrawerItem';
 import Drawer from './DrawerComponents/Drawer';
 import DrawerHeader from './DrawerComponents/DrawerHeader';
+import React from 'react';
+import { cpuContext } from '../context/CpuContext';
 
 type AddProcessFormProps = {
   open: boolean;
@@ -28,6 +30,7 @@ const DrawerMenu = ({
   handleAddModalOpen,
   handleListModalOpen,
 }: AddProcessFormProps) => {
+  const { cpu, forceUpdate } = React.useContext(cpuContext);
   //FUNÇÃO QUE CONFERE O TEXTO DO BOTÃO DO MENU LATERAL PARA ASSOCIÁ-LO À FUNÇÃO CERTA DO SIMULADOR
   const checkMenuText = (text: string) => {
     if (text === 'Iniciar') {
@@ -40,10 +43,10 @@ const DrawerMenu = ({
       handleAddModalOpen();
     }
     if (text === 'Suspender') {
-      return cpu.addProcess(null, 4, 4);
+      return cpu?.addProcess(null, 4, 4);
     }
     if (text === 'Excluir') {
-      return cpu.addProcess(100000);
+      return cpu?.addProcess(100000);
     }
     if (text === 'Listar') {
       handleListModalOpen();
