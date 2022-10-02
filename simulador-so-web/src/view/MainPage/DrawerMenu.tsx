@@ -71,8 +71,8 @@ const DrawerMenu = ({
         {['Iniciar', 'Parar'].map((text, index) => (
           <DrawerItem key={text} isOpen={open} text={text} action={() => checkMenuText(text)}>
             <>
-              {index === 0 ? <PlayCircleOutlineIcon onClick={start} /> : null}
-              {index === 1 ? <StopCircleIcon onClick={stop} /> : null}
+              {index === 0 ? <PlayCircleOutlineIcon onClick={() => checkMenuText(text)} /> : null}
+              {index === 1 ? <StopCircleIcon onClick={() => checkMenuText(text)} /> : null}
             </>
           </DrawerItem>
         ))}
@@ -89,12 +89,10 @@ const DrawerMenu = ({
         {['Adicionar', 'Suspender', 'Excluir', 'Listar'].map((text, index) => (
           <DrawerItem key={text} isOpen={open} text={text} action={() => checkMenuText(text)}>
             <>
-              {index === 0 ? <AddIcon onClick={() => handleAddModalOpen()} /> : null}
-              {index === 1 ? <HourglassTopIcon onClick={() => cpu.addProcess(null, 4, 4)} /> : null}
-              {index === 2 ? <DeleteIcon onClick={() => cpu.addProcess(100000)} /> : null}
-              {index === 3 ? (
-                <FormatListBulletedIcon onClick={() => handleListModalOpen()} />
-              ) : null}
+              {index === 0 ? <AddIcon onClick={() => checkMenuText(text)} /> : null}
+              {index === 1 ? <HourglassTopIcon onClick={() => checkMenuText(text)} /> : null}
+              {index === 2 ? <DeleteIcon onClick={() => checkMenuText(text)} /> : null}
+              {index === 3 ? <FormatListBulletedIcon onClick={() => checkMenuText(text)} /> : null}
             </>
           </DrawerItem>
         ))}

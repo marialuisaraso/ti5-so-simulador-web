@@ -1,6 +1,7 @@
-import { createGlobalStyle } from "styled-components";
+import { createTheme } from '@mui/material';
+import { createGlobalStyle } from 'styled-components';
 
-import pixelToRem from "../utils/pxToRem";
+import pixelToRem from '../utils/pxToRem';
 
 export const GlobalStyles = createGlobalStyle`
 *{
@@ -42,26 +43,16 @@ body{
   /* Fonts */
     --font-display: 500 ${pixelToRem(60)}/${pixelToRem(90)} "Montserrat", sans-serif;
 
-    --font-heading-1: 400 ${pixelToRem(32)}/${pixelToRem(
-  48
-)} "Montserrat", sans-serif;
+    --font-heading-1: 400 ${pixelToRem(32)}/${pixelToRem(48)} "Montserrat", sans-serif;
 
-    --font-heading-2: 500 ${pixelToRem(24)}/${pixelToRem(
-  32
-)} "Montserrat", sans-serif;
+    --font-heading-2: 500 ${pixelToRem(24)}/${pixelToRem(32)} "Montserrat", sans-serif;
 
-    --font-heading-3: 400 ${pixelToRem(20)}/${pixelToRem(
-  24
-)} "Montserrat", sans-serif;
+    --font-heading-3: 400 ${pixelToRem(20)}/${pixelToRem(24)} "Montserrat", sans-serif;
 
 
---font-mobile-heading-1: 500 ${pixelToRem(36)}/${pixelToRem(
-  50
-)} "Montserrat", sans-serif;
+--font-mobile-heading-1: 500 ${pixelToRem(36)}/${pixelToRem(50)} "Montserrat", sans-serif;
 
---font-mobile-text-1: 400 ${pixelToRem(14)}/${pixelToRem(
-  24
-)} "Montserrat", sans-serif;
+--font-mobile-text-1: 400 ${pixelToRem(14)}/${pixelToRem(24)} "Montserrat", sans-serif;
 
 
 --text-4: 500 ${pixelToRem(18)}/${pixelToRem(32)} "Montserrat", sans-serif;
@@ -71,3 +62,9 @@ body{
 --text-0: 400 ${pixelToRem(14)}/${pixelToRem(24)} "Montserrat", sans-serif;
 
 }`;
+
+export const darkTheme = createTheme({
+    palette: {
+        mode: 'light',
+    },
+});
