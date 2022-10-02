@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
-import { Subtitle } from './estilos/styles';
 
 function valuetext(value: number) {
   return `${value}`;
@@ -18,7 +17,7 @@ export default function DiscreteSlider() {
         marks
         min={0}
         max={10}
-        color='secondary'
+        color="secondary"
       />
     </Box>
   );

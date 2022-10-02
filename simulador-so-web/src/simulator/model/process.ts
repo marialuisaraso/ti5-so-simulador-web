@@ -44,15 +44,15 @@ export class Process {
             return this.state;
         }
 
-        if (this.state == processState.New) {
+        if (this.state === processState.New) {
             this.state = processState.Ready;
-        } else if (this.state == processState.Ready) {
+        } else if (this.state === processState.Ready) {
             if (action === 'run') {
                 this.state = processState.Run;
             } else if (action === 'suspend') {
                 this.state = processState.ReadySuspended;
             }
-        } else if (this.state == processState.Run) {
+        } else if (this.state === processState.Run) {
             if (this.cpuTime >= (this.executionSize ?? Infinity)) {
                 this.state = processState.Completed;
             }
@@ -62,17 +62,17 @@ export class Process {
             } else {
                 this.state = processState.Ready;
             }
-        } else if (this.state == processState.Wait) {
+        } else if (this.state === processState.Wait) {
             if (action === 'ioComplete') {
                 this.state = processState.Ready;
             } else if (action === 'suspend') {
                 this.state = processState.WaitSuspended;
             }
-        } else if (this.state == processState.ReadySuspended) {
+        } else if (this.state === processState.ReadySuspended) {
             if (action === 'wake') {
                 this.state = processState.Ready;
             }
-        } else if (this.state == processState.WaitSuspended) {
+        } else if (this.state === processState.WaitSuspended) {
             if (action === 'wake') {
                 this.state = processState.Wait;
             } else if (action === 'ioComplete') {

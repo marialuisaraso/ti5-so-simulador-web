@@ -1,5 +1,4 @@
 import { Divider, IconButton, List, Typography, useTheme } from '@mui/material';
-import MuiDrawer from '@mui/material/Drawer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import DeleteIcon from '@mui/icons-material/Delete';

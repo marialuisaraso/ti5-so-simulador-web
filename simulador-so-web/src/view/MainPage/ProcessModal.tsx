@@ -6,7 +6,7 @@ type AddProcessFormProps = {
   handleClose: Function;
 };
 
-const ProcessList = ({ open, handleClose }: AddProcessFormProps) => {
+const ProcessModal = ({ open, handleClose }: AddProcessFormProps) => {
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -35,4 +35,4 @@ const ProcessList = ({ open, handleClose }: AddProcessFormProps) => {
   );
 };
 
-export default ProcessList;
+export default ProcessModal;
