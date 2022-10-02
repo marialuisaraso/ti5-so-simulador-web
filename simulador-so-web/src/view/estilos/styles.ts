@@ -10,12 +10,12 @@ interface GalleryFlexContainerProps {
     padding?: string;
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     justifyContent?:
-    | 'flex-start'
-    | 'flex-end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly';
+        | 'flex-start'
+        | 'flex-end'
+        | 'center'
+        | 'space-between'
+        | 'space-around'
+        | 'space-evenly';
 }
 
 export const Container = styled.div<GalleryFlexContainerProps>`
@@ -155,7 +155,6 @@ export const MenuTitles = styled.p`
     color: var(--gray-05);
     font: var(--text-4);
     max-width: ${pixelToRem(728)};
-    
 
     @media ${device.mobile} {
         padding: ${pixelToRem(16, 0, 32, 0)};
@@ -231,3 +230,15 @@ export const DivFooterMenu = styled.div`
         text-decoration: none;
     }
 `;
+
+export const addModalStyle = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: 'none',
+    boxShadow: 24,
+    p: 4,
+};

@@ -25,33 +25,12 @@ import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import pixelToRem from './utils/pxToRem';
 import { main, start, stop, cpu } from '../simulator/main';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import BasicTextFields from './Forms'
-import SubmitButton from './SubmitButton';
 
-import {
-  Container,
-  SimulatorTitle,
-  SimulatorCanvas,
-  MenuTitles
-} from './estilos/styles';
-
-//ESTILIZAÇÃO DO MODAL DE ADICIONAR PROCESSO
-const addModalStyle = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: 'none',
-  boxShadow: 24,
-  p: 4,
-};
+import { Container, SimulatorTitle, SimulatorCanvas, MenuTitles } from './estilos/styles';
+import AddProcessForm from './MainPage/AddProcessForm';
+import ProcessList from './MainPage/ProcessList';
 
 //TEMA DO CSS DA PÁGINA
 const darkTheme = createTheme({
@@ -140,20 +119,17 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
 );
 
 //MENU(DRAWER) LATERAL
-export default function MiniDrawer() {
-
+export default function Simulador() {
   // ESTADO DO MENU(DRAWER) LATERAL
   const [open, setOpen] = React.useState(false);
 
   // ESTADO DO MODAL DE ADICIONAR PROCESSO
   const [openAddModal, setAddModalOpen] = React.useState(false);
   const handleAddModalOpen = () => setAddModalOpen(true);
-  const handleAddModalClose = () => setAddModalOpen(false);
 
   // ESTADO DO MODAL DE LISTAR PROCESSOS
   const [openListModal, setListModalOpen] = React.useState(false);
   const handleListModalOpen = () => setListModalOpen(true);
-  const handleListModalClose = () => setListModalOpen(false);
 
   // ESTADO DA CPU
   const forceUpdate = useForceUpdate();
@@ -181,31 +157,31 @@ export default function MiniDrawer() {
   //FUNÇÃO QUE CONFERE O TEXTO DO BOTÃO DO MENU LATERAL PARA ASSOCIÁ-LO À FUNÇÃO CERTA DO SIMULADOR
   const checkMenuText = (text: string) => {
     if (text === 'Iniciar') {
-      start()
+      start();
     }
     if (text === 'Parar') {
-      stop()
+      stop();
     }
     if (text === 'Adicionar') {
-      handleAddModalOpen()
+      handleAddModalOpen();
     }
     if (text === 'Suspender') {
-      return cpu.addProcess(null, 4, 4)
+      return cpu.addProcess(null, 4, 4);
     }
     if (text === 'Excluir') {
-      return cpu.addProcess(100000)
+      return cpu.addProcess(100000);
     }
     if (text === 'Listar') {
-      handleListModalOpen()
+      handleListModalOpen();
     }
-    return 0
-  }
+    return 0;
+  };
 
   return (
     <ThemeProvider theme={darkTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="fixed" open={open} style={{ backgroundColor: "#680079" }}>
+        <AppBar position="fixed" open={open} style={{ backgroundColor: '#680079' }}>
           <Toolbar>
             <IconButton
               color="inherit"
@@ -219,60 +195,15 @@ export default function MiniDrawer() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography>
-              SIMULADOR DE SISTEMA OPERACIONAL MULTICORE
-            </Typography>
+            <Typography>SIMULADOR DE SISTEMA OPERACIONAL MULTICORE</Typography>
           </Toolbar>
         </AppBar>
 
         {/* MODAL QUE ABRE EM ADICIONAR PROCESSO */}
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={openAddModal}
-          onClose={handleAddModalClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={openAddModal}>
-            <Box sx={addModalStyle}>
-              <Typography id="transition-modal-title" variant="h6" component="h2" style={{ marginBottom: 10, fontWeight: "bold" }}>
-                ADICIONAR NOVO PROCESSO
-              </Typography>
-              <BasicTextFields />
-              <SubmitButton />
-            </Box>
-          </Fade>
-        </Modal>
+        <AddProcessForm open={openAddModal} handleClose={setAddModalOpen} />
 
         {/* MODAL QUE ABRE EM LISTAR PROCESSOS */}
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={openListModal}
-          onClose={handleListModalClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={openListModal}>
-            <Box sx={addModalStyle}>
-              <Typography id="transition-modal-title" variant="h6" component="h2" style={{ marginBottom: 10, fontWeight: "bold" }}>
-                LISTA DE PROCESSOS
-              </Typography>
-              {/* {cpu.readyQueue.items.at(0) === null ? null :
-                <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                  {JSON.stringify(cpu.readyQueue.items)}
-                </Typography>
-              } */}
-            </Box>
-          </Fade>
-        </Modal>
+        <ProcessList open={openListModal} handleClose={setListModalOpen} />
 
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>
@@ -284,7 +215,11 @@ export default function MiniDrawer() {
 
           {/* BOTÕES DE SIMULAÇÃO LIGADOS ÀS SUAS RESPECTIVAS FUNÇÕES */}
           <List>
-            {open ? <Typography style={{ marginLeft: 23, marginTop: 10, fontWeight: "bold" }}>SIMULAÇÃO</Typography> : null}
+            {open ? (
+              <Typography style={{ marginLeft: 23, marginTop: 10, fontWeight: 'bold' }}>
+                SIMULAÇÃO
+              </Typography>
+            ) : null}
             {['Iniciar', 'Parar'].map((text, index) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                 <ListItemButton
@@ -314,7 +249,11 @@ export default function MiniDrawer() {
 
           {/* BOTÕES DE PROCESSO LIGADOS ÀS SUAS RESPECTIVAS FUNÇÕES */}
           <List>
-            {open ? <Typography style={{ marginLeft: 23, marginTop: 10, fontWeight: "bold" }}>PROCESSOS</Typography> : null}
+            {open ? (
+              <Typography style={{ marginLeft: 23, marginTop: 10, fontWeight: 'bold' }}>
+                PROCESSOS
+              </Typography>
+            ) : null}
             {['Adicionar', 'Suspender', 'Excluir', 'Listar'].map((text, index) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                 <ListItemButton
@@ -333,10 +272,13 @@ export default function MiniDrawer() {
                     }}
                   >
                     {index === 0 ? <AddIcon onClick={() => handleAddModalOpen()} /> : null}
-                    {index === 1 ? <HourglassTopIcon onClick={() => cpu.addProcess(null, 4, 4)} /> : null}
+                    {index === 1 ? (
+                      <HourglassTopIcon onClick={() => cpu.addProcess(null, 4, 4)} />
+                    ) : null}
                     {index === 2 ? <DeleteIcon onClick={() => cpu.addProcess(100000)} /> : null}
-                    {index === 3 ? <FormatListBulletedIcon onClick={() => handleListModalOpen()} /> : null}
-
+                    {index === 3 ? (
+                      <FormatListBulletedIcon onClick={() => handleListModalOpen()} />
+                    ) : null}
                   </ListItemIcon>
                   <MenuTitles>{open ? text : null}</MenuTitles>
                 </ListItemButton>
@@ -347,7 +289,13 @@ export default function MiniDrawer() {
 
           {/* SLIDER DE CONFIGURAÇÃO DO TEMPO DE ROUND-ROBIN */}
           <List>
-            {open ? <Typography style={{ marginLeft: 23, marginTop: 10, marginBottom: 10, fontWeight: "bold" }}>ROUND-ROBIN</Typography> : null}
+            {open ? (
+              <Typography
+                style={{ marginLeft: 23, marginTop: 10, marginBottom: 10, fontWeight: 'bold' }}
+              >
+                ROUND-ROBIN
+              </Typography>
+            ) : null}
             {['Ajustar tempo'].map((text, index) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                 <ListItem
@@ -373,20 +321,17 @@ export default function MiniDrawer() {
           </List>
           {open ? <DiscreteSlider /> : null}
         </Drawer>
-
         {/* FORA DO MENU(DRAWER) - CANVAS DO SIMULADOR EM SI */}
         <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
           <Container flex="column" margin={pixelToRem(70, 112, 50)}>
             <SimulatorTitle>GERÊNCIA DE PROCESSOS</SimulatorTitle>
-            <SimulatorCanvas>
-            </SimulatorCanvas>
+            <SimulatorCanvas></SimulatorCanvas>
 
             <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
             <SimulatorCanvas></SimulatorCanvas>
             <div>{JSON.stringify(cpu)}</div>
           </Container>
         </Box>
-
       </Box>
     </ThemeProvider>
   );
