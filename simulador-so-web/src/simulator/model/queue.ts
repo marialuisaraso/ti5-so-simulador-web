@@ -11,6 +11,14 @@ export class Queue<T> {
         return `[${this.items.map(e => `[${e.toString()}]`).toString()}]`;
     }
 
+    isEmpty(): boolean {
+        return this.items.some(q => q.length > 0);
+    }
+
+    size(): number {
+        return this.items.reduce((size, q) => (size += q.length), 0);
+    }
+
     push(item: T, priority: number = 0): void {
         this.items[priority].push(item);
     }

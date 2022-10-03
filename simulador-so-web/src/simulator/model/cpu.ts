@@ -1,6 +1,8 @@
 import { Memory } from './memory';
 import { Process } from './process';
 import { Queue } from './queue';
+import { IORequest } from './shared/IORequest';
+import { processActions } from './shared/processActions';
 import { processState } from './shared/processState';
 
 export class CPU {
@@ -8,14 +10,14 @@ export class CPU {
     suspendedQueue: Array<Process>;
     allProcess: Array<Process>;
     runningJob: Process | null = null;
-    ioQueue: Queue<Process>;
+    ioQueue: Queue<IORequest>;
     memory: Memory;
-    cache?: Memory;
     roundRobinQuantum: number = 1000;
     active: boolean = false;
     hook: Function = () => {};
     // TODO
     // Actually implement these
+    cache?: Memory;
     contextChangeTime: number = 10;
     clockSpeed: number = 100;
 
@@ -31,13 +33,13 @@ export class CPU {
         hook?: Function;
         suspendedQueue?: Array<Process>;
         allProcess?: Array<Process>;
-        ioQueue?: Queue<Process>;
-    } = {}) {
+        ioQueue?: Queue<IORequest>;
+    }) {
         this.hook = hook ? hook : () => {};
         this.readyQueue = readyQueue ?? new Queue<Process>();
         this.suspendedQueue = suspendedQueue ?? new Array<Process>();
         this.allProcess = allProcess ?? new Array<Process>();
-        this.ioQueue = ioQueue ?? new Queue<Process>();
+        this.ioQueue = ioQueue ?? new Queue<IORequest>();
         this.memory = new Memory();
     }
 
@@ -55,31 +57,42 @@ export class CPU {
         while (this.active) {
             const job = this.readyQueue.getFirst();
             if (!job) {
-                this.stop();
                 this.hook();
                 return;
-            } else if (job.state === processState.Ready) {
-                job.determineNextState('run');
-                this.runningJob = job;
+            } else {
+                switch (job.state) {
+                    case processState.Ready:
+                        await this.executeJob(job);
+                        break;
+                    case processState.ReadySuspended:
+                        this.suspendedQueue.push(job);
+                        break;
+                    case processState.ReadySuspended:
+                        this.suspendedQueue.push(job);
+                        break;
+                    case processState.Wait:
+                    case processState.WaitSuspended:
+                        this.sendToIO(job);
+                        break;
+                    default:
+                        break;
+                }
                 this.hook();
-
-                await this.executeJob(job);
-                job.determineNextState();
-            } else if (job.state === processState.ReadySuspended) this.suspendedQueue.push(job);
-            else if (job.state === processState.Terminate) job.executionSize = 0;
-            else if (job.state === processState.Wait || job.state === processState.WaitSuspended)
-                this.ioQueue.push(job);
-            this.hook();
+            }
         }
     }
 
     async executeJob(job: Process): Promise<void> {
+        this.runningJob = job;
         const execTime = job.determineExecTime(this.roundRobinQuantum);
+        job.determineNextState(processActions.Run);
+        this.hook();
         await new Promise<void>(resolve =>
             setTimeout(() => {
                 job.cpuTime += execTime;
                 if (job.cpuTime !== job.executionSize) this.readyQueue.push(job, job.priority);
                 this.runningJob = null;
+                job.determineNextState();
                 resolve();
             }, execTime)
         );
@@ -89,18 +102,22 @@ export class CPU {
         const newProcess = new Process(executionSize, memorySize, priority);
         this.readyQueue.push(newProcess, newProcess.priority);
         this.allProcess.push(newProcess);
+
+        // reinicia o método run que foi parado
+        if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.run();
+
         this.hook();
     }
 
     public suspendProcess(pId: number): void {
         const process = this.allProcess.find(e => e.pId === pId);
-        if (process) process.determineNextState('suspend');
+        if (process) process.determineNextState(processActions.Suspend);
         this.hook();
     }
 
     public wakeProcess(pId: number): void {
         let process = this.suspendedQueue.find(e => e.pId === pId);
-        if (process) process.determineNextState('wake');
+        if (process) process.determineNextState(processActions.Wake);
         this.hook();
         // else {
         //     process = this.ioQueue.find(e => e.pId === pId);
@@ -113,7 +130,13 @@ export class CPU {
 
     public excludeProcess(pId: number): void {
         const process = this.allProcess.find(e => e.pId === pId);
-        if (process) process.determineNextState('terminate');
+        if (process) process.determineNextState(processActions.Terminate);
         this.hook();
+    }
+
+    private sendToIO(process: Process) {
+        let ioRequest = new IORequest(process, this.readyQueue);
+
+        this.ioQueue.push(ioRequest, process.priority);
     }
 }

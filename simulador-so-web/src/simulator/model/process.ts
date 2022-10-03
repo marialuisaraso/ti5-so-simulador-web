@@ -1,3 +1,4 @@
+import { processActions } from './shared/processActions';
 import { processState } from './shared/processState';
 
 export class Process {
@@ -9,12 +10,14 @@ export class Process {
     cpuTime: number = 0;
     priority: number = 0;
     state: processState = processState.New;
+    IOPeriod: number | null = null; // send to IO every n times
+    lastIO: number = 0;
 
     constructor(
         executionSize?: number | null,
         memorySize?: number,
         priority?: number,
-        boundTo?: number
+        IOPeriod?: number | null
     ) {
         this.pId = Process.nextId;
         Process.nextId++;
@@ -22,6 +25,7 @@ export class Process {
         this.executionSize = executionSize ?? null;
         this.memorySize = memorySize ?? 4;
         this.priority = priority ?? 0;
+        this.IOPeriod = IOPeriod ?? null;
 
         this.determineNextState();
     }
@@ -36,50 +40,78 @@ export class Process {
         else return this.executionSize - this.cpuTime;
     }
 
-    determineNextState(action?: string) {
+    determineNextState(action?: processActions): processState {
         // https://www.javatpoint.com/os-process-states
 
-        if (action === 'terminate') {
+        if (action === processActions.Terminate) {
             this.state = processState.Terminate;
             return this.state;
         }
 
-        if (this.state === processState.New) {
-            this.state = processState.Ready;
-        } else if (this.state === processState.Ready) {
-            if (action === 'run') {
-                this.state = processState.Run;
-            } else if (action === 'suspend') {
-                this.state = processState.ReadySuspended;
-            }
-        } else if (this.state === processState.Run) {
-            if (this.cpuTime >= (this.executionSize ?? Infinity)) {
-                this.state = processState.Completed;
-            }
-            if (false) {
-                // TODO determine when process will go to IO
-                this.state = processState.Wait;
-            } else {
+        switch (this.state) {
+            case processState.New:
                 this.state = processState.Ready;
-            }
-        } else if (this.state === processState.Wait) {
-            if (action === 'ioComplete') {
-                this.state = processState.Ready;
-            } else if (action === 'suspend') {
-                this.state = processState.WaitSuspended;
-            }
-        } else if (this.state === processState.ReadySuspended) {
-            if (action === 'wake') {
-                this.state = processState.Ready;
-            }
-        } else if (this.state === processState.WaitSuspended) {
-            if (action === 'wake') {
-                this.state = processState.Wait;
-            } else if (action === 'ioComplete') {
-                this.state = processState.ReadySuspended;
-            }
+                break;
+            case processState.Ready:
+                switch (action) {
+                    case processActions.Run:
+                        this.state = processState.Run;
+                        break;
+                    case processActions.Suspend:
+                        this.state = processState.ReadySuspended;
+                        break;
+                }
+                break;
+            case processState.Run:
+                if (this.isComplete()) {
+                    this.state = processState.Completed;
+                } else if (this.sendToIO()) {
+                    this.state = processState.Wait;
+                } else {
+                    this.state = processState.Ready;
+                }
+                break;
+            case processState.Wait:
+                switch (action) {
+                    case processActions.WaitProcessed:
+                        this.state = processState.Ready;
+                        break;
+                    case processActions.Suspend:
+                        this.state = processState.WaitSuspended;
+                        break;
+                }
+                break;
+            case processState.ReadySuspended:
+                switch (action) {
+                    case processActions.Wake:
+                        this.lastIO = this.cpuTime;
+                        this.state = processState.Ready;
+                        break;
+                }
+                break;
+            case processState.WaitSuspended:
+                switch (action) {
+                    case processActions.Wake:
+                        this.lastIO = this.cpuTime;
+                        this.state = processState.Wait;
+                        break;
+                    case processActions.WaitProcessed:
+                        this.state = processState.ReadySuspended;
+                        break;
+                }
+                break;
         }
 
         return this.state;
+    }
+
+    private sendToIO(): boolean {
+        if (this.IOPeriod === null) return false;
+        if (this.cpuTime - this.lastIO >= this.IOPeriod) return true;
+        else return false;
+    }
+
+    private isComplete(): boolean {
+        return this.cpuTime >= (this.executionSize ?? Infinity);
     }
 }
