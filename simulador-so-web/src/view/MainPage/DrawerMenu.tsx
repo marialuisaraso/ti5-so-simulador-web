@@ -43,10 +43,10 @@ const DrawerMenu = ({
       handleAddModalOpen();
     }
     if (text === 'Suspender') {
-      return cpu?.addProcess(null, 4, 4);
+      return cpu?.addProcess({ executionSize: null, memorySize: 4, priority: 4 });
     }
     if (text === 'Excluir') {
-      return cpu?.addProcess(100000);
+      return cpu?.addProcess({ executionSize: 100000 });
     }
     if (text === 'Listar') {
       handleListModalOpen();

@@ -63,13 +63,13 @@ function App() {
 
         <SimulatorTitle id="simulador">GERÊNCIA DE PROCESSOS</SimulatorTitle>
         <SimulatorCanvas>
-          <div onClick={() => cpu.addProcess(10000, 30)}>
+          <div onClick={() => cpu.addProcess({ executionSize: 10000, memorySize: 30 })}>
             <CanvasButton1 text="NOVO" />
           </div>
-          <div onClick={() => cpu.addProcess(null, 4, 4)}>
+          <div onClick={() => cpu.addProcess({ executionSize: null, memorySize: 4, priority: 4 })}>
             <CanvasButton1 text="PAUSAR" />
           </div>
-          <div onClick={() => cpu.addProcess(100000)}>
+          <div onClick={() => cpu.addProcess({ executionSize: 100000 })}>
             <CanvasButton1 text="FINALIZAR" />
           </div>
         </SimulatorCanvas>
