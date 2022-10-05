@@ -26,6 +26,7 @@ export const Container = styled.div<GalleryFlexContainerProps>`
     padding: ${props => props.padding};
     align-items: ${props => props.alignItems};
     justify-content: ${props => props.justifyContent};
+    height: 75vh;
 
     @media ${device.mobile} {
         margin: ${pixelToRem(17)};
@@ -121,7 +122,7 @@ export const SimulatorTitle = styled.div`
 
 export const SimulatorCanvas = styled.div`
   width: 100%;
-  height: ${pixelToRem(320)} ;
+  height: 100% ;
   border: 2px solid; 
   border-color: var(--roxo); 
   margin-top: 12px;
