@@ -98,8 +98,18 @@ export class CPU {
         );
     }
 
-    public addProcess(executionSize?: number | null, memorySize?: number, priority?: number) {
-        const newProcess = new Process(executionSize, memorySize, priority);
+    public addProcess({
+        executionSize,
+        memorySize,
+        priority,
+        ioPeriod,
+    }: {
+        executionSize?: number | null;
+        memorySize?: number;
+        priority?: number;
+        ioPeriod?: number;
+    }) {
+        const newProcess = new Process(executionSize, memorySize, priority, ioPeriod);
         this.readyQueue.push(newProcess, newProcess.priority);
         this.allProcess.push(newProcess);
 
