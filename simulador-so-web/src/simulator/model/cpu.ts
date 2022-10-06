@@ -6,6 +6,9 @@ import { processActions } from './shared/processActions';
 import { processState } from './shared/processState';
 
 export class CPU {
+    static nextId: number = 0;
+
+    cpuId: number;
     readyQueue: Queue<Process>;
     suspendedQueue: Array<Process>;
     allProcess: Array<Process>;
@@ -35,6 +38,9 @@ export class CPU {
         allProcess?: Array<Process>;
         ioQueue?: Queue<IORequest>;
     }) {
+        this.cpuId = CPU.nextId;
+        CPU.nextId++;
+
         this.hook = hook ? hook : () => {};
         this.readyQueue = readyQueue ?? new Queue<Process>();
         this.suspendedQueue = suspendedQueue ?? new Array<Process>();
@@ -112,6 +118,7 @@ export class CPU {
         const newProcess = new Process(executionSize, memorySize, priority, ioPeriod);
         this.readyQueue.push(newProcess, newProcess.priority);
         this.allProcess.push(newProcess);
+        this.memory.usage.push({process:newProcess, cost:newProcess.memorySize});
 
         // reinicia o método run que foi parado
         if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.run();

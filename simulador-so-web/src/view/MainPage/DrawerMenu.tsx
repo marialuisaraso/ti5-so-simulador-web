@@ -8,6 +8,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AddIcon from '@mui/icons-material/Add';
+import AdbRoundedIcon from '@mui/icons-material/AdbRounded';
 
 import { start, stop } from '../../simulator/main';
 import DiscreteSlider from '../slider';
@@ -115,8 +116,18 @@ const DrawerMenu = ({
             <>{index === 0 ? <AccessTimeIcon /> : null}</>
           </DrawerItem>
         ))}
+        {open ? <DiscreteSlider /> : null}
       </List>
-      {open ? <DiscreteSlider /> : null}
+      <DrawerItem
+        isOpen={open}
+        text={'Debug'}
+        action={() => {
+          // alert(JSON.stringify(cpu));
+          console.log((cpu));
+        }}
+      >
+        <AdbRoundedIcon />
+      </DrawerItem>
     </Drawer>
   );
 };

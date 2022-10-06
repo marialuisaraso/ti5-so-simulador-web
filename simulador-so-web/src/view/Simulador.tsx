@@ -1,13 +1,8 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import CssBaseline from '@mui/material/CssBaseline';
-import IconButton from '@mui/material/IconButton';
+import { Box, Toolbar, IconButton, CssBaseline, Typography, Grid } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ThemeProvider } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 
-// import { main, cpu } from '../simulator/main';
 import { Container, SimulatorTitle, SimulatorCanvas } from './estilos/styles';
 import { darkTheme } from './estilos/globalstyles';
 import pixelToRem from './utils/pxToRem';
@@ -17,11 +12,7 @@ import DrawerMenu from './MainPage/DrawerMenu';
 import AppBar from './MainPage/AppBar';
 import ProcessesDisplay from './MainPage/ProcessesDisplay';
 import { cpuContext } from './context/CpuContext';
-
-// function useForceUpdate() {
-//   const [, setValue] = React.useState(0); // integer state
-//   return () => setValue(value => value + 1); // update state to force render
-// }
+import CpuCard from './components/CpuCard';
 
 export default function Simulador() {
   const { cpu, forceUpdate } = React.useContext(cpuContext);
@@ -61,13 +52,16 @@ export default function Simulador() {
         <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
           <Container flex="column" margin={pixelToRem(70, 112, 50)}>
             <SimulatorTitle>GERÊNCIA DE PROCESSOS</SimulatorTitle>
-            <SimulatorCanvas>
-              <ProcessesDisplay />
-            </SimulatorCanvas>
-
-            <SimulatorTitle>GERÊNCIA DE PROCESSADOR</SimulatorTitle>
-            <SimulatorCanvas></SimulatorCanvas>
-            <div>{JSON.stringify(cpu)}</div>
+            <Grid container sx={{ height: '100%' }} columnSpacing={2}>
+              <Grid item xs={9}>
+                <SimulatorCanvas>
+                  <ProcessesDisplay />
+                </SimulatorCanvas>
+              </Grid>
+              <Grid item xs={3}>
+                <CpuCard/>
+              </Grid>
+            </Grid>
           </Container>
         </Box>
       </Box>
