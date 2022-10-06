@@ -9,7 +9,7 @@ const columns: GridColDef[] = [
   { field: 'cpuTime', headerName: 'Tempo executado', width: 150 },
   { field: 'memorySize', headerName: 'Tamanho', width: 150 },
   { field: 'priority', headerName: 'Prioridade', width: 150 },
-  { field: 'state', headerName: 'Status', width: 150 },
+  { field: 'state', headerName: 'Status', width: 150 }
 ];
 
 type ProcessesDisplayProps = {
@@ -24,6 +24,7 @@ const ProcessesDisplay = () => {
     if (cpu) setRows([...cpu.allProcess]);
   }, [forceUpdate]);
   return <DataGrid rows={rows} columns={columns} getRowId={row => row.pId} />;
+
 };
 
 export default ProcessesDisplay;

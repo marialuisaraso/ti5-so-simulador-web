@@ -1,20 +1,43 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import { useForm, Controller } from "react-hook-form";
+import Button from '@mui/material/Button';
+import { TextField } from "@mui/material";
+import Stack from '@mui/material/Stack';
+import { cpu } from "../simulator/main";
 
-export default function BasicTextFields() {
+
+export default function BasicTextFields(this: any) {
+    const { control, handleSubmit } = useForm({
+        defaultValues: {
+            executionSize: '',
+            priority: '',
+            memorySize: '',
+        }
+    });
+    const onSubmit = (data: any) => {
+        { cpu.addProcess(data) }
+    };
     return (
-        <Box
-            component="form"
-            sx={{
-                '& > :not(style)': { m: 1, marginLeft: 0, marginRight: 0, width: '25ch' },
-            }}
-            noValidate
-            autoComplete="off"
-        >
-            <TextField id="outlined-basic" label="Tamanho de memória" variant="outlined" style={{ width: '37ch' }} />
-            <TextField id="outlined-basic" label="Prioridade" variant="outlined" style={{ width: '37ch' }} />
-            <TextField id="outlined-basic" label="Tempo que vai rodar" variant="outlined" style={{ width: '37ch' }} />
-        </Box>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+                name="memorySize"
+                control={control}
+                render={({ field }) => <TextField {...field} required type="number" id="outlined-basic" label="Tamanho de memória" variant="outlined" style={{ width: '37ch', marginBottom: 20 }} color="secondary" />}
+            />
+            <Controller
+                name="priority"
+                control={control}
+                render={({ field }) => <TextField {...field} required type="number" id="outlined-basic" label="Prioridade" variant="outlined" style={{ width: '37ch', marginBottom: 20 }} color="secondary" />}
+            />
+            <Controller
+                name="executionSize"
+                control={control}
+                render={({ field }) => <TextField {...field} required type="number" id="outlined-basic" label="Tempo que vai rodar" variant="outlined" style={{ width: '37ch', marginBottom: 10 }} color="secondary" />}
+            />
+            <Stack spacing={2} direction="column">
+                <Button type="submit" variant="contained" style={{ marginTop: 20, color: 'white', backgroundColor: "#680079", fontWeight: "bold", width: '42ch' }}>ADICIONAR</Button>
+            </Stack >
+        </form>
     );
-}
+};
+
+

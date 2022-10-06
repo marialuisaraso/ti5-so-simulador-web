@@ -1,7 +1,6 @@
 import { Modal, Fade, Box, Typography, Backdrop } from '@mui/material';
 import { addModalStyle } from '../estilos/styles';
 import BasicTextFields from '../Forms';
-import SubmitButton from '../SubmitButton';
 
 type AddProcessFormProps = {
   open: boolean;
@@ -27,12 +26,11 @@ const AddProcessForm = ({ open, handleClose }: AddProcessFormProps) => {
             id="transition-modal-title"
             variant="h6"
             component="h2"
-            style={{ marginBottom: 10, fontWeight: 'bold' }}
+            style={{ marginBottom: 20, fontWeight: 'bold' }}
           >
             ADICIONAR NOVO PROCESSO
           </Typography>
           <BasicTextFields />
-          <SubmitButton />
         </Box>
       </Fade>
     </Modal>

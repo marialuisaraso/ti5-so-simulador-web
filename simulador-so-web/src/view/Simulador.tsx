@@ -23,8 +23,8 @@ export default function Simulador() {
   // ESTADO DO MODAL DE ADICIONAR PROCESSO
   const [openAddModal, setAddModalOpen] = React.useState(false);
 
-  // ESTADO DO MODAL DE LISTAR PROCESSOS
-  const [openListModal, setListModalOpen] = React.useState(false);
+  // ESTADO DO MODAL DE EXCLUIR PROCESSO
+  const [openExcludeModal, setExcludeModalOpen] = React.useState(false);
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -59,7 +59,7 @@ export default function Simulador() {
                 </SimulatorCanvas>
               </Grid>
               <Grid item xs={3}>
-                <CpuCard/>
+                <CpuCard />
               </Grid>
             </Grid>
           </Container>
@@ -67,14 +67,14 @@ export default function Simulador() {
       </Box>
       {/* MODAL QUE ABRE EM ADICIONAR PROCESSO */}
       <AddProcessForm open={openAddModal} handleClose={setAddModalOpen} />
-      {/* MODAL QUE ABRE EM LISTAR PROCESSOS */}
-      <ProcessModal open={openListModal} handleClose={setListModalOpen} />
+      {/* MODAL QUE ABRE EM EXCLUIR PROCESSO */}
+      <ProcessModal open={openExcludeModal} handleClose={setExcludeModalOpen} />
 
       <DrawerMenu
         open={open}
         handleClose={setOpen}
         handleAddModalOpen={() => setAddModalOpen(true)}
-        handleListModalOpen={() => setListModalOpen(true)}
+        handleExcludeModalOpen={() => setExcludeModalOpen(true)}
       />
     </ThemeProvider>
   );

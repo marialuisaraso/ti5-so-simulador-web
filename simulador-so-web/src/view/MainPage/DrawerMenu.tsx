@@ -4,7 +4,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AddIcon from '@mui/icons-material/Add';
@@ -22,14 +21,14 @@ type AddProcessFormProps = {
   open: boolean;
   handleClose: Function;
   handleAddModalOpen: Function;
-  handleListModalOpen: Function;
+  handleExcludeModalOpen: Function;
 };
 
 const DrawerMenu = ({
   open,
   handleClose,
   handleAddModalOpen,
-  handleListModalOpen,
+  handleExcludeModalOpen,
 }: AddProcessFormProps) => {
   const { cpu, forceUpdate } = React.useContext(cpuContext);
   //FUNÇÃO QUE CONFERE O TEXTO DO BOTÃO DO MENU LATERAL PARA ASSOCIÁ-LO À FUNÇÃO CERTA DO SIMULADOR
@@ -44,13 +43,10 @@ const DrawerMenu = ({
       handleAddModalOpen();
     }
     if (text === 'Suspender') {
-      return cpu?.addProcess({ executionSize: null, memorySize: 4, priority: 4 });
+      return cpu?.suspendProcess(process.pid)
     }
     if (text === 'Excluir') {
-      return cpu?.addProcess({ executionSize: 100000 });
-    }
-    if (text === 'Listar') {
-      handleListModalOpen();
+      return handleExcludeModalOpen();
     }
     return 0;
   };
@@ -89,13 +85,12 @@ const DrawerMenu = ({
             PROCESSOS
           </Typography>
         ) : null}
-        {['Adicionar', 'Suspender', 'Excluir', 'Listar'].map((text, index) => (
+        {['Adicionar', 'Suspender', 'Excluir'].map((text, index) => (
           <DrawerItem key={text} isOpen={open} text={text} action={() => checkMenuText(text)}>
             <>
               {index === 0 ? <AddIcon onClick={() => checkMenuText(text)} /> : null}
               {index === 1 ? <HourglassTopIcon onClick={() => checkMenuText(text)} /> : null}
               {index === 2 ? <DeleteIcon onClick={() => checkMenuText(text)} /> : null}
-              {index === 3 ? <FormatListBulletedIcon onClick={() => checkMenuText(text)} /> : null}
             </>
           </DrawerItem>
         ))}
@@ -122,7 +117,6 @@ const DrawerMenu = ({
         isOpen={open}
         text={'Debug'}
         action={() => {
-          // alert(JSON.stringify(cpu));
           console.log((cpu));
         }}
       >

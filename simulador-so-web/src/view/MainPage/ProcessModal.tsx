@@ -1,5 +1,6 @@
 import { Modal, Backdrop, Fade, Box, Typography } from '@mui/material';
 import { addModalStyle } from '../estilos/styles';
+import ProcessesDisplay from './ProcessesDisplay';
 
 type AddProcessFormProps = {
   open: boolean;
@@ -27,8 +28,9 @@ const ProcessModal = ({ open, handleClose }: AddProcessFormProps) => {
             component="h2"
             style={{ marginBottom: 10, fontWeight: 'bold' }}
           >
-            LISTA DE PROCESSOS
+            EXCLUIR PROCESSO
           </Typography>
+
         </Box>
       </Fade>
     </Modal>

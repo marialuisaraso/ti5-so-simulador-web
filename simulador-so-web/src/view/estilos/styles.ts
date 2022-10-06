@@ -10,12 +10,12 @@ interface GalleryFlexContainerProps {
     padding?: string;
     alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
     justifyContent?:
-        | 'flex-start'
-        | 'flex-end'
-        | 'center'
-        | 'space-between'
-        | 'space-around'
-        | 'space-evenly';
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly';
 }
 
 export const Container = styled.div<GalleryFlexContainerProps>`
