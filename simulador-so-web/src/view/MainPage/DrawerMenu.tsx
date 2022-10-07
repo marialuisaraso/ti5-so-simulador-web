@@ -94,12 +94,12 @@ const DrawerMenu = ({
             PROCESSOS
           </Typography>
         ) : null}
-        {['Adicionar', 'Suspender', 'Excluir', 'Acordar'].map((text, index) => (
+        {['Adicionar', 'Excluir', 'Suspender', 'Acordar'].map((text, index) => (
           <DrawerItem key={text} isOpen={open} text={text} action={() => checkMenuText(text)}>
             <>
               {index === 0 ? <AddIcon /> : null}
-              {index === 1 ? <HourglassTopIcon /> : null}
-              {index === 2 ? <DeleteIcon /> : null}
+              {index === 1 ? <DeleteIcon /> : null}
+              {index === 2 ? <HourglassTopIcon /> : null}
               {index === 3 ? <VisibilityIcon /> : null}
             </>
           </DrawerItem>
