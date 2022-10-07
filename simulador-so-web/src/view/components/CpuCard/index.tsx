@@ -33,7 +33,7 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
         </Typography>
         {cpu?.runningJob == null ? (
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Excutando: 0
+            Excutando: -
           </Typography>
         ) : (
           <Typography sx={{ mb: 1.5 }} color="text.secondary">

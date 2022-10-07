@@ -67,6 +67,9 @@ export class Process {
                     this.state = processState.Completed;
                 } else if (this.sendToIO()) {
                     this.state = processState.Wait;
+                } else if (action === processActions.Suspend) {
+                    this.state = processState.ReadySuspended;
+                    return this.state;
                 } else {
                     this.state = processState.Ready;
                 }

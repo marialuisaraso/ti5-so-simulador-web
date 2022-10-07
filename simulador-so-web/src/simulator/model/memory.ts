@@ -10,6 +10,10 @@ export class Memory {
     }
 
     getUsageRate(): number {
-        return this.usage.map(e => Number(e.cost)).reduce((a, b) => a + b, 0) * 100 / this.size;
+        return (this.usage.map(e => Number(e.cost)).reduce((a, b) => a + b, 0) * 100) / this.size;
+    }
+
+    remove(pId: number) {
+        this.usage = this.usage.filter(p => p.process.pId !== pId);
     }
 }

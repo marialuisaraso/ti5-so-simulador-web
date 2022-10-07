@@ -73,12 +73,13 @@ export class CPU {
                     case processState.ReadySuspended:
                         this.suspendedQueue.push(job);
                         break;
-                    case processState.ReadySuspended:
-                        this.suspendedQueue.push(job);
-                        break;
                     case processState.Wait:
                     case processState.WaitSuspended:
                         this.sendToIO(job);
+                        break;
+                    case processState.Completed:
+                    case processState.Terminate:
+                        this.memory.remove(job.pId);
                         break;
                     default:
                         break;
@@ -141,13 +142,6 @@ export class CPU {
 
         this.readyQueue.push(process, process.priority);
         this.hook();
-        // else {
-        //     process = this.ioQueue.find(e => e.pId === pId);
-        //     if (!process) return;
-        //     process.boundTo = RUN;
-        //     this.readyQueue.push(process, process.priority);
-        //     // process = null;
-        // }
     }
 
     public excludeProcess(pId: number): void {
