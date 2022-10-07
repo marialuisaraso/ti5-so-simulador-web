@@ -155,4 +155,9 @@ export class CPU {
 
         this.ioQueue.push(ioRequest, process.priority);
     }
+
+    public setRoundRobin(newValue: number) {
+        this.roundRobinQuantum = newValue;
+        this.hook();
+    }
 }
