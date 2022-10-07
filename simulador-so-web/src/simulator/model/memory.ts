@@ -21,6 +21,11 @@ export class Memory {
         this.usage = this.usage.filter(p => p.process.pId !== pId);
     }
 
+    checkToAdd(process: Process) {
+        if (this.getTotalUsage() + process.memorySize > this.size) throw 'Overflow de memória';
+        return true;
+    }
+
     add(process: Process) {
         if (this.getTotalUsage() + process.memorySize > this.size) throw 'Overflow de memória';
         this.usage.push({ process: process, cost: process.memorySize });

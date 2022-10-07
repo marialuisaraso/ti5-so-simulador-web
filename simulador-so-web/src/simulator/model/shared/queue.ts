@@ -20,6 +20,7 @@ export class Queue<T> {
     }
 
     push(item: T, priority: number = 0): void {
+        if (priority >= this.length) throw 'prioridade inválida';
         this.items[priority].push(item);
     }
 
