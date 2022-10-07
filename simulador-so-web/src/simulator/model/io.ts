@@ -8,6 +8,7 @@ export class IO {
     IOTime: number;
     hook: Function = () => {};
     active: boolean = false;
+    runningPercentage: number = 0;
 
     constructor({
         queue,
@@ -41,23 +42,41 @@ export class IO {
                 await new Promise<void>(resolve => setTimeout(() => resolve(), this.IOTime));
             } else {
                 await this.processRequest(request);
-                this.hook();
             }
         }
     }
 
     async processRequest(request: IORequest): Promise<void> {
+        const runDivide = 10;
         this.activeRequest = request;
         this.hook();
 
-        await new Promise<void>(resolve =>
+        await new Promise<void>(async resolve => {
+            this.runningPercentage = 0;
+
+            for (let i = 1; i < runDivide; i++) {
+                await new Promise<void>(resolve =>
+                    setTimeout(() => {
+                        this.runningPercentage += 100 / runDivide;
+                        this.hook();
+
+                        resolve();
+                    }, this.IOTime / runDivide)
+                );
+            }
+
             setTimeout(() => {
+                this.runningPercentage += 100 / runDivide;
+                this.hook();
+
                 request.originalQueue.push(request.process);
                 this.activeRequest = null;
                 request.process.determineNextState(processActions.WaitProcessed);
 
+                this.hook();
+
                 resolve();
-            }, this.IOTime)
-        );
+            }, this.IOTime / runDivide);
+        });
     }
 }

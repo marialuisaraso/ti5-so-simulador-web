@@ -18,6 +18,7 @@ export class CPU {
     roundRobinQuantum: number = 1000;
     active: boolean = false;
     hook: Function = () => {};
+    runningPercentage: number = 0;
     // TODO
     // Actually implement these
     cache?: Memory;
@@ -92,19 +93,36 @@ export class CPU {
     }
 
     async executeJob(job: Process): Promise<void> {
+        const runDivide = 10;
         this.runningJob = job;
         const execTime = job.determineExecTime(this.roundRobinQuantum);
         job.determineNextState(processActions.Run);
         this.hook();
-        await new Promise<void>(resolve =>
+
+        await new Promise<void>(async resolve => {
+            this.runningPercentage = 0;
+
+            for (let i = 1; i < runDivide; i++) {
+                await new Promise<void>(resolve =>
+                    setTimeout(() => {
+                        this.runningPercentage += 100 / runDivide;
+                        this.hook();
+
+                        resolve();
+                    }, execTime / runDivide)
+                );
+            }
+
             setTimeout(() => {
                 job.cpuTime += execTime;
                 if (job.cpuTime !== job.executionSize) this.readyQueue.push(job, job.priority);
                 this.runningJob = null;
                 job.determineNextState();
+                this.hook();
+
                 resolve();
-            }, execTime)
-        );
+            }, execTime / runDivide);
+        });
     }
 
     public addProcess({

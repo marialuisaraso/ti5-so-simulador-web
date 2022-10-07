@@ -22,7 +22,9 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
     </Box>
   );
 }
+
 const CpuCard = ({ cpuId }: CpuCardProps) => {
+  // eslint-disable-next-line
   const { cpu, io, forceUpdate } = React.useContext(cpuContext);
 
   return (
@@ -38,6 +40,14 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
         ) : (
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             Excutando: {cpu?.runningJob?.pId}
+            {cpu?.runningPercentage && (
+              <LinearProgress
+                variant="determinate"
+                color="secondary"
+                value={cpu?.runningPercentage}
+                style={{ height: 8 }}
+              ></LinearProgress>
+            )}
           </Typography>
         )}
         <Typography variant="body2">
@@ -69,6 +79,14 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
         ) : (
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             Processando: {io?.activeRequest.process.pId}
+            {io?.runningPercentage && (
+              <LinearProgress
+                variant="determinate"
+                color="secondary"
+                value={io?.runningPercentage}
+                style={{ height: 8 }}
+              ></LinearProgress>
+            )}
           </Typography>
         )}
       </CardContent>

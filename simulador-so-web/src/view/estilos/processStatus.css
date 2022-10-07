@@ -23,7 +23,13 @@
 }
 
 .terminated {
-    background-color: #d220d5ea;
+    background-color: #860000ea;
     color: #000000;
     font-weight: 600;
+}
+
+.i\/o {
+    background-color: #d220d5ea;
+        color: #000000;
+        font-weight: 600;
 }
