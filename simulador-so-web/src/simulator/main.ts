@@ -1,4 +1,4 @@
-import { Queue } from './model/queue';
+import { Queue } from './model/shared/queue';
 import { CPU } from './model/cpu';
 import { Process } from './model/process';
 
