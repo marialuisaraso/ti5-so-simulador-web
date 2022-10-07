@@ -2,6 +2,9 @@ import * as React from 'react';
 import { Box, Toolbar, IconButton, CssBaseline, Typography, Grid } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ThemeProvider } from '@mui/material/styles';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DeleteIcon from '@mui/icons-material/Delete';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 
 import { Container, SimulatorTitle, SimulatorCanvas } from './estilos/styles';
 import { darkTheme } from './estilos/globalstyles';
@@ -92,6 +95,15 @@ export default function Simulador() {
           else if (mode === actionModes.Suspend) cpu?.suspendProcess(e.pId);
           else cpu?.wakeProcess(e.pId);
         }}
+        displayIcon={
+          mode === actionModes.Exclude ? (
+            <DeleteIcon />
+          ) : mode === actionModes.Suspend ? (
+            <HourglassTopIcon />
+          ) : (
+            <VisibilityIcon />
+          )
+        }
       />
 
       <DrawerMenu
