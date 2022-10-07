@@ -119,7 +119,7 @@ export class CPU {
         const newProcess = new Process(executionSize, memorySize, priority, ioPeriod);
         this.readyQueue.push(newProcess, newProcess.priority);
         this.allProcess.push(newProcess);
-        this.memory.usage.push({ process: newProcess, cost: newProcess.memorySize });
+        this.memory.add(newProcess);
 
         // reinicia o método run que foi parado
         if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.start();
