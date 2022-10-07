@@ -15,8 +15,10 @@ export default function BasicTextFields(this: any) {
     },
   });
   const onSubmit = (data: any) => {
-    {
+    try {
       cpu?.addProcess(data);
+    } catch (e) {
+      alert(e);
     }
   };
   return (
