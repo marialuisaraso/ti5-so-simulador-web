@@ -1,29 +1,29 @@
 .suspended {
-    background-color: #c5c6d0;
-    color: #1a3e72;
+    background-color: #8b8c98;
+    color: #000000;
     font-weight: 600;
 }
 
 .ready {
-    background-color: rgba(224, 183, 60, 0.55);
-    color: #1a3e72;
+    background-color: rgba(20, 151, 5, 0.864);
+    color: #000000;
     font-weight: 600;
 }
 
 .running {
-    background-color: #5dbb63;
-    color: #1a3e72;
+    background-color: #055fbe;
+    color: #000000;
     font-weight: 600;
 }
 
 .completed {
-    background-color: #63c5da;
-    color: #1a3e72;
+    background-color: #c5df00;
+    color: #000000;
     font-weight: 600;
 }
 
 .terminated {
-    background-color: #f41400;
-    color: #1a3e72;
+    background-color: #d220d5ea;
+    color: #000000;
     font-weight: 600;
 }
