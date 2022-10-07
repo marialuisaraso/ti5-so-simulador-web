@@ -133,8 +133,13 @@ export class CPU {
     }
 
     public wakeProcess(pId: number): void {
-        let process = this.suspendedQueue.find(e => e.pId === pId);
+        let processidx = this.suspendedQueue.findIndex(e => e.pId === pId);
+        if (processidx === -1) return;
+
+        let process = this.suspendedQueue.splice(processidx, 1)[0];
         if (process) process.determineNextState(processActions.Wake);
+
+        this.readyQueue.push(process, process.priority);
         this.hook();
         // else {
         //     process = this.ioQueue.find(e => e.pId === pId);
