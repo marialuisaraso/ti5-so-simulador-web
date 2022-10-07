@@ -34,6 +34,11 @@ const DrawerMenu = ({
   handleModeOperation,
 }: AddProcessFormProps) => {
   const { cpu, forceUpdate } = React.useContext(cpuContext);
+  const [roundRobin, setRoundRobin] = React.useState(1);
+
+  React.useEffect(() => {
+    cpu?.setRoundRobin(roundRobin * 1000);
+  }, [roundRobin]);
   //FUNÇÃO QUE CONFERE O TEXTO DO BOTÃO DO MENU LATERAL PARA ASSOCIÁ-LO À FUNÇÃO CERTA DO SIMULADOR
   const checkMenuText = (text: string) => {
     if (text === 'Iniciar') {
@@ -121,7 +126,9 @@ const DrawerMenu = ({
             <>{index === 0 ? <AccessTimeIcon /> : null}</>
           </DrawerItem>
         ))}
-        {open ? <DiscreteSlider /> : null}
+        {open ? (
+          <DiscreteSlider value={roundRobin} handleChange={(val: number) => setRoundRobin(val)} />
+        ) : null}
       </List>
       <DrawerItem
         isOpen={open}

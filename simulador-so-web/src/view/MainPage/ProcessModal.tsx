@@ -19,9 +19,10 @@ type AddProcessFormProps = {
   handleClose: Function;
   action: Function;
   title: string;
+  displayIcon: any;
 };
 
-const ProcessModal = ({ open, handleClose, title, action }: AddProcessFormProps) => {
+const ProcessModal = ({ open, handleClose, title, action, displayIcon }: AddProcessFormProps) => {
   const { cpu, forceUpdate } = React.useContext(cpuContext);
   return (
     <Modal
@@ -58,7 +59,7 @@ const ProcessModal = ({ open, handleClose, title, action }: AddProcessFormProps)
                       handleClose(false);
                     }}
                   >
-                    <CommentIcon />
+                    {displayIcon}
                   </IconButton>
                 }
               >

@@ -9,9 +9,9 @@ export default function BasicTextFields(this: any) {
   const { cpu, forceUpdate } = React.useContext(cpuContext);
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      executionSize: '',
-      priority: '',
-      memorySize: '',
+      executionSize: null,
+      priority: 0,
+      memorySize: 4,
     },
   });
   const onSubmit = (data: any) => {
@@ -59,7 +59,6 @@ export default function BasicTextFields(this: any) {
         render={({ field }) => (
           <TextField
             {...field}
-            required
             type="number"
             id="outlined-basic"
             label="Tempo que vai rodar"

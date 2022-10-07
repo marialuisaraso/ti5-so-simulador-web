@@ -5,7 +5,12 @@ function valuetext(value: number) {
   return `${value}`;
 }
 
-export default function DiscreteSlider() {
+type DiscreteSliderProps = {
+  value: number;
+  handleChange: Function;
+};
+
+const DiscreteSlider = ({ value, handleChange }: DiscreteSliderProps) => {
   return (
     <Box sx={{ width: 200, marginLeft: 2 }}>
       <Slider
@@ -15,10 +20,14 @@ export default function DiscreteSlider() {
         valueLabelDisplay="auto"
         step={1}
         marks
-        min={0}
+        value={value}
+        onChange={(event: Event, newValue: number | number[]) => handleChange(newValue)}
+        min={1}
         max={10}
         color="secondary"
       />
     </Box>
   );
-}
+};
+
+export default DiscreteSlider;

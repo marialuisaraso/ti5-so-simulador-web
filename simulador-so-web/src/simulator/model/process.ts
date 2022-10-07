@@ -42,6 +42,9 @@ export class Process {
 
     determineNextState(action?: processActions): processState {
         // https://www.javatpoint.com/os-process-states
+        const finalStates = [processState.Completed, processActions.Terminate];
+
+        if (finalStates.some(s => s === this.state)) return this.state;
 
         if (action === processActions.Terminate) {
             this.state = processState.Terminate;

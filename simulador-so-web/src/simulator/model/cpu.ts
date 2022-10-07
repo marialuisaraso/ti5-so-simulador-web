@@ -59,7 +59,7 @@ export class CPU {
         this.run();
     }
 
-    async run() {
+    private async run() {
         while (this.active) {
             const job = this.readyQueue.getFirst();
             if (!job) {
@@ -119,10 +119,10 @@ export class CPU {
         const newProcess = new Process(executionSize, memorySize, priority, ioPeriod);
         this.readyQueue.push(newProcess, newProcess.priority);
         this.allProcess.push(newProcess);
-        this.memory.usage.push({ process: newProcess, cost: newProcess.memorySize });
+        this.memory.add(newProcess);
 
         // reinicia o método run que foi parado
-        if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.run();
+        if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.start();
 
         this.hook();
     }
@@ -146,7 +146,10 @@ export class CPU {
 
     public excludeProcess(pId: number): void {
         const process = this.allProcess.find(e => e.pId === pId);
-        if (process) process.determineNextState(processActions.Terminate);
+        if (process) {
+            process.determineNextState(processActions.Terminate);
+            this.memory.remove(process.pId);
+        }
         this.hook();
     }
 
@@ -154,5 +157,10 @@ export class CPU {
         let ioRequest = new IORequest(process, this.readyQueue);
 
         this.ioQueue.push(ioRequest, process.priority);
+    }
+
+    public setRoundRobin(newValue: number) {
+        this.roundRobinQuantum = newValue;
+        this.hook();
     }
 }
