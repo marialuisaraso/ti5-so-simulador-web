@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Badge, Card, CardContent, Typography } from '@mui/material';
 import { cpuContext } from '../../context/CpuContext';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
@@ -30,21 +30,24 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
   return (
     <Card variant="outlined" style={{ marginTop: 10 }}>
       <CardContent>
-        <Typography variant="h5" component="div">
-          CPU {cpu?.cpuId}
-        </Typography>
+        <Badge badgeContent=" " color={cpu?.active ? 'success' : 'error'} variant="dot">
+          <Typography variant="h5" component="div">
+            CPU {cpu?.cpuId}
+          </Typography>
+        </Badge>
+
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           Estado: {cpu?.active ? 'Ativo' : 'Inativo'}
         </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Excutando: {cpu?.runningJob ? cpu?.runningJob?.pId : '-'}
-              <LinearProgressWithLabel
-                variant="determinate"
-                color="success"
-                value={cpu?.runningPercentage ? cpu?.runningPercentage : 0}
-                style={{ height: 8 }}
-              ></LinearProgressWithLabel>
-          </Typography>
+        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+          Excutando: {cpu?.runningJob ? cpu?.runningJob?.pId : '-'}
+          <LinearProgressWithLabel
+            variant="determinate"
+            color="success"
+            value={cpu?.runningPercentage ? cpu?.runningPercentage : 0}
+            style={{ height: 8 }}
+          ></LinearProgressWithLabel>
+        </Typography>
         <Typography variant="body2">
           Memória utilizada
           {cpu?.memory.getUsageRate() === undefined ? (
@@ -64,7 +67,7 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
           )}
         </Typography>
 
-        <Typography variant="h5" component="div">
+        <Typography variant="h5" component="div" sx={{ mt: 1.75 }}>
           IO
         </Typography>
         {io?.activeRequest == null ? (
