@@ -123,8 +123,8 @@ export const SimulatorTitle = styled.div`
 export const SimulatorCanvas = styled.div`
   width: 100%;
   height: 100% ;
-  border: 2px solid; 
-  border-color: var(--roxo); 
+  border: 0.5px solid; 
+  border-color: #D3D3D3; 
   margin-top: 12px;
   margin-bottom: 12px;
   display: flex;
