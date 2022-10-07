@@ -1,6 +1,6 @@
 import { Memory } from './memory';
 import { Process } from './process';
-import { Queue } from './queue';
+import { Queue } from './shared/queue';
 import { IORequest } from './shared/IORequest';
 import { processActions } from './shared/processActions';
 import { processState } from './shared/processState';
@@ -118,7 +118,7 @@ export class CPU {
         const newProcess = new Process(executionSize, memorySize, priority, ioPeriod);
         this.readyQueue.push(newProcess, newProcess.priority);
         this.allProcess.push(newProcess);
-        this.memory.usage.push({process:newProcess, cost:newProcess.memorySize});
+        this.memory.usage.push({ process: newProcess, cost: newProcess.memorySize });
 
         // reinicia o método run que foi parado
         if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.run();

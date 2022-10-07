@@ -1,5 +1,4 @@
-import { Process } from './process';
-import { Queue } from './queue';
+import { Queue } from './shared/queue';
 import { IORequest } from './shared/IORequest';
 import { processActions } from './shared/processActions';
 

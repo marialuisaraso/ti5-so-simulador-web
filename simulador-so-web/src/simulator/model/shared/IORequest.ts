@@ -1,5 +1,5 @@
 import { Process } from '../process';
-import { Queue } from '../queue';
+import { Queue } from './queue';
 
 export class IORequest {
     process: Process;

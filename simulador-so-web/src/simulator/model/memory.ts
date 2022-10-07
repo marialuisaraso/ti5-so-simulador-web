@@ -5,11 +5,11 @@ export class Memory {
     usage: { process: Process; cost: number }[] = [];
     fetchTime: number = 0;
 
-    constructor(size?: number){
-        this.size = size ?? 64; 
+    constructor(size?: number) {
+        this.size = size ?? 64;
     }
 
     getUsageRate(): number {
-        return this.usage.map(e => e.cost).reduce((a, b) => a+b, 0) / this.size * 100;
+        return (this.usage.map(e => Number(e.cost)).reduce((a, b) => a + b, 0) / this.size) * 100;
     }
 }
