@@ -23,7 +23,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
   );
 }
 const CpuCard = ({ cpuId }: CpuCardProps) => {
-  const { cpu, forceUpdate } = React.useContext(cpuContext);
+  const { cpu, io, forceUpdate } = React.useContext(cpuContext);
 
   return (
     <Card variant="outlined" style={{ marginTop: 10 }}>
@@ -58,6 +58,19 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
             />
           )}
         </Typography>
+
+        <Typography variant="h5" component="div">
+          IO
+        </Typography>
+        {io?.activeRequest == null ? (
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            Processando: -
+          </Typography>
+        ) : (
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            Processando: {io?.activeRequest.process.pId}
+          </Typography>
+        )}
       </CardContent>
     </Card>
   );

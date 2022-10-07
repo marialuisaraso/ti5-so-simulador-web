@@ -1,7 +1,8 @@
 import { useEffect, useState, createContext } from 'react';
 
 import { CPU } from '../../simulator/model/cpu';
-import { cpu, main } from '../../simulator/main';
+import { cpu, io, main } from '../../simulator/main';
+import { IO } from '../../simulator/model/io';
 
 function useForceUpdate() {
   const [value, setValue] = useState(0); // integer state
@@ -10,10 +11,11 @@ function useForceUpdate() {
 
 type cpuContext = {
   cpu: CPU | null;
+  io: IO | null;
   forceUpdate: Function;
 };
 
-export const cpuContext = createContext<cpuContext>({ cpu: null, forceUpdate: () => {} });
+export const cpuContext = createContext<cpuContext>({ cpu: null, io: null, forceUpdate: () => {} });
 
 type ProviderProps = {
   children: JSX.Element;
@@ -26,5 +28,5 @@ export const CpuProvider = ({ children }: ProviderProps) => {
     main(forceUpdate);
   }, []);
 
-  return <cpuContext.Provider value={{ cpu, forceUpdate }}>{children}</cpuContext.Provider>;
+  return <cpuContext.Provider value={{ cpu, io, forceUpdate }}>{children}</cpuContext.Provider>;
 };

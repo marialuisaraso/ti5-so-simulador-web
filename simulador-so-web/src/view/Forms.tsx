@@ -14,6 +14,7 @@ export default function BasicTextFields(this: any) {
       executionSize: null,
       priority: 0,
       memorySize: 4,
+      ioPeriod: null,
     },
   });
   const onSubmit = (data: any) => {
@@ -68,6 +69,21 @@ export default function BasicTextFields(this: any) {
               type="number"
               id="outlined-basic"
               label="Tempo que vai rodar"
+              variant="outlined"
+              style={{ width: '37ch', marginBottom: 10 }}
+              color="secondary"
+            />
+          )}
+        />
+        <Controller
+          name="ioPeriod"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="number"
+              id="outlined-basic"
+              label="A cada quantos ciclos vai pra I/O"
               variant="outlined"
               style={{ width: '37ch', marginBottom: 10 }}
               color="secondary"

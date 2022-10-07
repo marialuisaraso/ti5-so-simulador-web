@@ -38,12 +38,11 @@ export class IO {
             const request = this.queue.getFirst();
             if (!request) {
                 this.hook();
-                return;
+                await new Promise<void>(resolve => setTimeout(() => resolve(), this.IOTime));
             } else {
                 await this.processRequest(request);
+                this.hook();
             }
-
-            this.hook();
         }
     }
 

@@ -64,7 +64,9 @@ export class CPU {
             const job = this.readyQueue.getFirst();
             if (!job) {
                 this.hook();
-                return;
+                await new Promise<void>(resolve =>
+                    setTimeout(() => resolve(), this.roundRobinQuantum)
+                );
             } else {
                 switch (job.state) {
                     case processState.Ready:
@@ -123,7 +125,7 @@ export class CPU {
         this.memory.add(newProcess);
 
         // reinicia o método run que foi parado
-        if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.start();
+        // if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.start();
 
         this.hook();
     }
