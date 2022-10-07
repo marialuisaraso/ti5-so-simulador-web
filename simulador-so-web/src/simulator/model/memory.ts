@@ -10,6 +10,6 @@ export class Memory {
     }
 
     getUsageRate(): number {
-        return (this.usage.map(e => Number(e.cost)).reduce((a, b) => a + b, 0) / this.size) * 100;
+        return this.usage.map(e => Number(e.cost)).reduce((a, b) => a + b, 0) * 100 / this.size;
     }
 }
