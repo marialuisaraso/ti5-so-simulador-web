@@ -10,10 +10,19 @@ export class Memory {
     }
 
     getUsageRate(): number {
-        return (this.usage.map(e => Number(e.cost)).reduce((a, b) => a + b, 0) * 100) / this.size;
+        return (this.getTotalUsage() * 100) / this.size;
+    }
+
+    getTotalUsage(): number {
+        return this.usage.map(e => Number(e.cost)).reduce((a, b) => a + b, 0);
     }
 
     remove(pId: number) {
         this.usage = this.usage.filter(p => p.process.pId !== pId);
+    }
+
+    add(process: Process) {
+        if (this.getTotalUsage() + process.memorySize > this.size) throw 'Overflow de memória';
+        this.usage.push({ process: process, cost: process.memorySize });
     }
 }

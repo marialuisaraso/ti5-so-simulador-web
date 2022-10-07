@@ -59,7 +59,7 @@ export class CPU {
         this.run();
     }
 
-    async run() {
+    private async run() {
         while (this.active) {
             const job = this.readyQueue.getFirst();
             if (!job) {
@@ -122,7 +122,7 @@ export class CPU {
         this.memory.usage.push({ process: newProcess, cost: newProcess.memorySize });
 
         // reinicia o método run que foi parado
-        if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.run();
+        if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.start();
 
         this.hook();
     }
@@ -146,7 +146,10 @@ export class CPU {
 
     public excludeProcess(pId: number): void {
         const process = this.allProcess.find(e => e.pId === pId);
-        if (process) process.determineNextState(processActions.Terminate);
+        if (process) {
+            process.determineNextState(processActions.Terminate);
+            this.memory.remove(process.pId);
+        }
         this.hook();
     }
 

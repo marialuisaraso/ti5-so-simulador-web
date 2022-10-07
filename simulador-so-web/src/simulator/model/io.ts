@@ -33,7 +33,7 @@ export class IO {
         this.run();
     }
 
-    async run() {
+    private async run() {
         while (this.active) {
             const request = this.queue.getFirst();
             if (!request) {
