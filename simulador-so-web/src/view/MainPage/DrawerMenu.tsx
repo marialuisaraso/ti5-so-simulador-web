@@ -8,6 +8,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AddIcon from '@mui/icons-material/Add';
 import AdbRoundedIcon from '@mui/icons-material/AdbRounded';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { start, stop } from '../../simulator/main';
 import DiscreteSlider from '../slider';
@@ -22,6 +23,7 @@ type AddProcessFormProps = {
   handleClose: Function;
   handleAddModalOpen: Function;
   handleExcludeModalOpen: Function;
+  handleModeOperation: Function;
 };
 
 const DrawerMenu = ({
@@ -29,6 +31,7 @@ const DrawerMenu = ({
   handleClose,
   handleAddModalOpen,
   handleExcludeModalOpen,
+  handleModeOperation,
 }: AddProcessFormProps) => {
   const { cpu, forceUpdate } = React.useContext(cpuContext);
   //FUNÇÃO QUE CONFERE O TEXTO DO BOTÃO DO MENU LATERAL PARA ASSOCIÁ-LO À FUNÇÃO CERTA DO SIMULADOR
@@ -43,9 +46,15 @@ const DrawerMenu = ({
       handleAddModalOpen();
     }
     if (text === 'Suspender') {
-      return cpu?.suspendProcess(process.pid)
+      handleModeOperation(2);
+      return handleExcludeModalOpen();
     }
     if (text === 'Excluir') {
+      handleModeOperation(1);
+      return handleExcludeModalOpen();
+    }
+    if (text === 'Acordar') {
+      handleModeOperation(3);
       return handleExcludeModalOpen();
     }
     return 0;
@@ -70,8 +79,8 @@ const DrawerMenu = ({
         {['Iniciar', 'Parar'].map((text, index) => (
           <DrawerItem key={text} isOpen={open} text={text} action={() => checkMenuText(text)}>
             <>
-              {index === 0 ? <PlayCircleOutlineIcon onClick={() => checkMenuText(text)} /> : null}
-              {index === 1 ? <StopCircleIcon onClick={() => checkMenuText(text)} /> : null}
+              {index === 0 ? <PlayCircleOutlineIcon /> : null}
+              {index === 1 ? <StopCircleIcon /> : null}
             </>
           </DrawerItem>
         ))}
@@ -85,12 +94,13 @@ const DrawerMenu = ({
             PROCESSOS
           </Typography>
         ) : null}
-        {['Adicionar', 'Suspender', 'Excluir'].map((text, index) => (
+        {['Adicionar', 'Suspender', 'Excluir', 'Acordar'].map((text, index) => (
           <DrawerItem key={text} isOpen={open} text={text} action={() => checkMenuText(text)}>
             <>
-              {index === 0 ? <AddIcon onClick={() => checkMenuText(text)} /> : null}
-              {index === 1 ? <HourglassTopIcon onClick={() => checkMenuText(text)} /> : null}
-              {index === 2 ? <DeleteIcon onClick={() => checkMenuText(text)} /> : null}
+              {index === 0 ? <AddIcon /> : null}
+              {index === 1 ? <HourglassTopIcon /> : null}
+              {index === 2 ? <DeleteIcon /> : null}
+              {index === 3 ? <VisibilityIcon /> : null}
             </>
           </DrawerItem>
         ))}
@@ -117,7 +127,7 @@ const DrawerMenu = ({
         isOpen={open}
         text={'Debug'}
         action={() => {
-          console.log((cpu));
+          console.log(cpu);
         }}
       >
         <AdbRoundedIcon />

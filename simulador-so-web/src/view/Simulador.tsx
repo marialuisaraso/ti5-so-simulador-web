@@ -13,6 +13,13 @@ import AppBar from './MainPage/AppBar';
 import ProcessesDisplay from './MainPage/ProcessesDisplay';
 import { cpuContext } from './context/CpuContext';
 import CpuCard from './components/CpuCard';
+import { Process } from '../simulator/model/process';
+
+enum actionModes {
+  Exclude = 1,
+  Suspend = 2,
+  Wake = 3,
+}
 
 export default function Simulador() {
   const { cpu, forceUpdate } = React.useContext(cpuContext);
@@ -25,6 +32,7 @@ export default function Simulador() {
 
   // ESTADO DO MODAL DE EXCLUIR PROCESSO
   const [openExcludeModal, setExcludeModalOpen] = React.useState(false);
+  const [mode, setMode] = React.useState(1);
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -65,16 +73,33 @@ export default function Simulador() {
           </Container>
         </Box>
       </Box>
+
       {/* MODAL QUE ABRE EM ADICIONAR PROCESSO */}
       <AddProcessForm open={openAddModal} handleClose={setAddModalOpen} />
       {/* MODAL QUE ABRE EM EXCLUIR PROCESSO */}
-      <ProcessModal open={openExcludeModal} handleClose={setExcludeModalOpen} />
+      <ProcessModal
+        open={openExcludeModal}
+        handleClose={setExcludeModalOpen}
+        title={
+          mode === actionModes.Exclude
+            ? 'Excluir'
+            : mode === actionModes.Suspend
+            ? 'Suspender'
+            : 'Acordar'
+        }
+        action={(e: Process) => {
+          if (mode === actionModes.Exclude) cpu?.excludeProcess(e.pId);
+          else if (mode === actionModes.Suspend) cpu?.suspendProcess(e.pId);
+          else cpu?.wakeProcess(e.pId);
+        }}
+      />
 
       <DrawerMenu
         open={open}
         handleClose={setOpen}
         handleAddModalOpen={() => setAddModalOpen(true)}
         handleExcludeModalOpen={() => setExcludeModalOpen(true)}
+        handleModeOperation={(newMode: number) => setMode(newMode)}
       />
     </ThemeProvider>
   );

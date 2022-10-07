@@ -1,10 +1,10 @@
 export enum processState {
-    New = 'new',
-    Ready = 'ready',
-    ReadySuspended = 'suspended',
-    Run = 'running',
-    WaitSuspended = 'suspended on I/O',
+    New = 'New',
+    Ready = 'Ready',
+    ReadySuspended = 'Suspended',
+    Run = 'Running',
+    WaitSuspended = 'Suspended on I/O',
     Wait = 'I/O',
-    Completed = 'completed',
-    Terminate = 'terminated',
+    Completed = 'Completed',
+    Terminate = 'Terminated',
 }
