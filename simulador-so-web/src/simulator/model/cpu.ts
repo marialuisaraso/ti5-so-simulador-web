@@ -117,6 +117,7 @@ export class CPU {
                 job.cpuTime += execTime;
                 if (job.cpuTime !== job.executionSize) this.readyQueue.push(job, job.priority);
                 this.runningJob = null;
+                this.runningPercentage = 0;
                 job.determineNextState();
                 this.hook();
 

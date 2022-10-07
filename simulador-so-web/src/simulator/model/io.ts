@@ -39,7 +39,7 @@ export class IO {
             const request = this.queue.getFirst();
             if (!request) {
                 this.hook();
-                await new Promise<void>(resolve => setTimeout(() => resolve(), this.IOTime));
+                await new Promise<void>(resolve => setTimeout(() => resolve(), this.IOTime / 10));
             } else {
                 await this.processRequest(request);
             }

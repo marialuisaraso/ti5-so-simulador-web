@@ -33,23 +33,18 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
         <Typography variant="h5" component="div">
           CPU {cpu?.cpuId}
         </Typography>
-        {cpu?.runningJob == null ? (
+        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+          Estado: {cpu?.active ? 'Ativo' : 'Inativo'}
+        </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Excutando: -
-          </Typography>
-        ) : (
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Excutando: {cpu?.runningJob?.pId}
-            {cpu?.runningPercentage && (
-              <LinearProgress
+            Excutando: {cpu?.runningJob ? cpu?.runningJob?.pId : '-'}
+              <LinearProgressWithLabel
                 variant="determinate"
-                color="secondary"
-                value={cpu?.runningPercentage}
+                color="success"
+                value={cpu?.runningPercentage ? cpu?.runningPercentage : 0}
                 style={{ height: 8 }}
-              ></LinearProgress>
-            )}
+              ></LinearProgressWithLabel>
           </Typography>
-        )}
         <Typography variant="body2">
           Memória utilizada
           {cpu?.memory.getUsageRate() === undefined ? (
@@ -80,12 +75,12 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             Processando: {io?.activeRequest.process.pId}
             {io?.runningPercentage && (
-              <LinearProgress
+              <LinearProgressWithLabel
                 variant="determinate"
-                color="secondary"
+                color="primary"
                 value={io?.runningPercentage}
                 style={{ height: 8 }}
-              ></LinearProgress>
+              ></LinearProgressWithLabel>
             )}
           </Typography>
         )}
