@@ -59,7 +59,6 @@ export default function BasicTextFields(this: any) {
         render={({ field }) => (
           <TextField
             {...field}
-            required
             type="number"
             id="outlined-basic"
             label="Tempo que vai rodar"
