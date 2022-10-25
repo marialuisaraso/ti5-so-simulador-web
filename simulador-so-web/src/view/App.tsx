@@ -18,7 +18,7 @@ import {
 
 import { Button, CanvasButton1, CanvasButton2 } from './components/Button';
 import pixelToRem from './utils/pxToRem';
-import { main, start, stop, cpu } from '../simulator/main';
+import { main, start, stop, cpus } from '../simulator/main';
 import React from 'react';
 
 function useForceUpdate() {
@@ -29,6 +29,7 @@ function useForceUpdate() {
 }
 
 function App() {
+  const cpu = cpus[0];
   const forceUpdate = useForceUpdate();
   const [cpuState, setCpuState] = React.useState(cpu);
   // const forceUpdate = React.useCallback(() => updateState(undefined), []);

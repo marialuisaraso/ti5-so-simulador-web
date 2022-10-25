@@ -6,7 +6,7 @@ import { cpuContext } from './context/CpuContext';
 import React from 'react';
 
 export default function BasicTextFields(this: any) {
-  const { cpu, forceUpdate } = React.useContext(cpuContext);
+  const { cpus, forceUpdate } = React.useContext(cpuContext);
   const [openAlert, setOpenAlert] = React.useState(false);
   const [message, setMessage] = React.useState<any>('');
   const { control, handleSubmit } = useForm({
@@ -19,7 +19,7 @@ export default function BasicTextFields(this: any) {
   });
   const onSubmit = (data: any) => {
     try {
-      cpu?.addProcess(data);
+      if (cpus) cpus[0]?.addProcess(data);
     } catch (e) {
       setOpenAlert(true);
       setMessage(e);

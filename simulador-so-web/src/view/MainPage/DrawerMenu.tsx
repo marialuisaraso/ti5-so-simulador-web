@@ -33,11 +33,11 @@ const DrawerMenu = ({
   handleExcludeModalOpen,
   handleModeOperation,
 }: AddProcessFormProps) => {
-  const { cpu, forceUpdate } = React.useContext(cpuContext);
+  const { cpus, forceUpdate } = React.useContext(cpuContext);
   const [roundRobin, setRoundRobin] = React.useState(1);
 
   React.useEffect(() => {
-    cpu?.setRoundRobin(roundRobin * 1000);
+    if (cpus) cpus[0]?.setRoundRobin(roundRobin * 1000);
   }, [roundRobin]);
   //FUNÇÃO QUE CONFERE O TEXTO DO BOTÃO DO MENU LATERAL PARA ASSOCIÁ-LO À FUNÇÃO CERTA DO SIMULADOR
   const checkMenuText = (text: string) => {
@@ -134,7 +134,7 @@ const DrawerMenu = ({
         isOpen={open}
         text={'Debug'}
         action={() => {
-          console.log(cpu);
+          console.log(cpus);
         }}
       >
         <AdbRoundedIcon />

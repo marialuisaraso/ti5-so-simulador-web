@@ -28,10 +28,10 @@ const columns: GridColDef[] = [
 
 const ProcessesDisplay = () => {
   const [rows, setRows] = React.useState<Array<Process>>([]);
-  const { cpu, forceUpdate } = React.useContext(cpuContext);
+  const { cpus, forceUpdate } = React.useContext(cpuContext);
 
   React.useEffect(() => {
-    if (cpu) setRows([...cpu.allProcess]);
+    if (cpus) setRows([...cpus[0].allProcess]);
   }, [forceUpdate]);
   return <DataGrid rows={rows} columns={columns} getRowId={row => row.pId} />;
 };

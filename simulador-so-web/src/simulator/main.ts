@@ -3,24 +3,35 @@ import { CPU } from './model/cpu';
 import { Process } from './model/process';
 import { IO } from './model/io';
 
-export var cpu: CPU;
-export var io: IO;
-export function main(hook?: Function) {
-    let q = new Queue<Process>();
+export var cpus: Array<CPU>;
+export var ios: Array<IO>;
 
-    cpu = new CPU({ readyQueue: q, hook });
-    io = new IO({ queue: cpu.ioQueue, hook });
-    io.start();
+export function main(hook?: Function, numberOfCpu?: number) {
+    let q = new Queue<Process>();
+    cpus = new Array<CPU>();
+    ios = new Array<IO>();
+    numberOfCpu = numberOfCpu ? numberOfCpu : 1;
+    for (let i = 0; i < numberOfCpu; i++) {
+        const cpu = new CPU({ readyQueue: q, hook });
+        const io = new IO({ queue: cpu.ioQueue, hook });
+        cpus.push(cpu);
+        ios.push(io);
+        io.start();
+    }
     if (hook) hook();
     // io = new CPU({readyQueue:cpu.ioQueue, hook})
 }
 
 export function start() {
-    cpu.start();
+    cpus.forEach(cpu => {
+        cpu.start();
+    });
 }
 
 export function stop() {
-    cpu.stop();
+    cpus.forEach(cpu => {
+        cpu.stop();
+    });
 }
 
 if (typeof require !== 'undefined' && require.main === module) {

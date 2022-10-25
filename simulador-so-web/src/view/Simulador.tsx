@@ -25,7 +25,7 @@ enum actionModes {
 }
 
 export default function Simulador() {
-  const { cpu, forceUpdate } = React.useContext(cpuContext);
+  const { cpus, forceUpdate } = React.useContext(cpuContext);
 
   // ESTADO DO MENU(DRAWER) LATERAL
   const [open, setOpen] = React.useState(false);
@@ -70,7 +70,11 @@ export default function Simulador() {
                 </SimulatorCanvas>
               </Grid>
               <Grid item xs={3}>
-                <CpuCard />
+                <>
+                  {cpus?.map((cpu, index) => {
+                    return <CpuCard key={index} cpuId={cpu.cpuId} />;
+                  })}
+                </>
               </Grid>
             </Grid>
           </Container>
@@ -91,9 +95,9 @@ export default function Simulador() {
             : 'Acordar'
         }
         action={(e: Process) => {
-          if (mode === actionModes.Exclude) cpu?.excludeProcess(e.pId);
-          else if (mode === actionModes.Suspend) cpu?.suspendProcess(e.pId);
-          else cpu?.wakeProcess(e.pId);
+          if (mode === actionModes.Exclude && cpus) cpus[0]?.excludeProcess(e.pId);
+          else if (mode === actionModes.Suspend && cpus) cpus[0]?.suspendProcess(e.pId);
+          else if (cpus) cpus[0]?.wakeProcess(e.pId);
         }}
         displayIcon={
           mode === actionModes.Exclude ? (

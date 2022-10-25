@@ -23,7 +23,7 @@ type AddProcessFormProps = {
 };
 
 const ProcessModal = ({ open, handleClose, title, action, displayIcon }: AddProcessFormProps) => {
-  const { cpu, forceUpdate } = React.useContext(cpuContext);
+  const { cpus, forceUpdate } = React.useContext(cpuContext);
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -47,25 +47,26 @@ const ProcessModal = ({ open, handleClose, title, action, displayIcon }: AddProc
             {title}
           </Typography>
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {cpu?.allProcess.map(value => (
-              <ListItem
-                key={value.pId}
-                disableGutters
-                secondaryAction={
-                  <IconButton
-                    aria-label="comment"
-                    onClick={() => {
-                      action(value);
-                      handleClose(false);
-                    }}
-                  >
-                    {displayIcon}
-                  </IconButton>
-                }
-              >
-                <ListItemText primary={`Processo ${value.pId}`} />
-              </ListItem>
-            ))}
+            {cpus &&
+              cpus[0]?.allProcess.map(value => (
+                <ListItem
+                  key={value.pId}
+                  disableGutters
+                  secondaryAction={
+                    <IconButton
+                      aria-label="comment"
+                      onClick={() => {
+                        action(value);
+                        handleClose(false);
+                      }}
+                    >
+                      {displayIcon}
+                    </IconButton>
+                  }
+                >
+                  <ListItemText primary={`Processo ${value.pId}`} />
+                </ListItem>
+              ))}
           </List>
         </Box>
       </Fade>
