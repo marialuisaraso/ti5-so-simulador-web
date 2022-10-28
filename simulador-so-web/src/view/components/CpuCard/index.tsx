@@ -70,26 +70,15 @@ function IoValue({ clusterId }: CpuCardProps) {
       <Typography sx={{ mb: 0 }} color="text.secondary">
         IO
       </Typography>
-      {io?.activeRequest == null ? (
+      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+        Processando: {io?.activeRequest ? io?.activeRequest.process.pId : '-'}
         <LinearProgressWithLabel
           variant="determinate"
-          color="secondary"
-          value={0}
+          color={io?.activeRequest ? 'primary' : 'secondary'}
+          value={io?.activeRequest ? io?.runningPercentage : 0}
           style={{ height: 8 }}
         />
-      ) : (
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          Processando: {io?.activeRequest.process.pId}
-          {io?.runningPercentage && (
-            <LinearProgressWithLabel
-              variant="determinate"
-              color="primary"
-              value={io?.runningPercentage}
-              style={{ height: 8 }}
-            ></LinearProgressWithLabel>
-          )}
-        </Typography>
-      )}
+      </Typography>
     </>
   );
 }

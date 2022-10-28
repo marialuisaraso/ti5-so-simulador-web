@@ -17,6 +17,7 @@ export class CPU {
     memory: Memory;
     roundRobinQuantum: number = 1000;
     active: boolean = false;
+    running: boolean = false;
     hook: Function = () => {};
     runningPercentage: number = 0;
     // TODO
@@ -63,6 +64,10 @@ export class CPU {
     }
 
     private async run() {
+        // não roda se já existir uma instância rodando
+        if (this.running) return;
+
+        this.running = true;
         while (this.active) {
             const job = this.readyQueue.getFirst();
             if (!job) {
@@ -92,6 +97,7 @@ export class CPU {
                 this.hook();
             }
         }
+        this.running = false;
     }
 
     async executeJob(job: Process): Promise<void> {

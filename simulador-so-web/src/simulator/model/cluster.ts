@@ -40,6 +40,7 @@ export class Cluster {
         this.memory = memory instanceof Memory ? memory : new Memory(memory);
 
         this.io = new IO({ queue: this.ioQueue, hook: this.hook });
+        this.io.start();
     }
 
     addCpu() {
