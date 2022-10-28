@@ -2,6 +2,9 @@ import * as React from 'react';
 import { Badge, Card, CardContent, Typography } from '@mui/material';
 import { cpuContext } from '../../context/CpuContext';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
+import PauseIcon from '@mui/icons-material/Pause';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 
 type CpuCardProps = {
@@ -23,6 +26,71 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
   );
 }
 
+function MemoryUsage({ cpuId }: CpuCardProps) {
+  const { cpus, io, forceUpdate } = React.useContext(cpuContext);
+  const mainCpu = cpus?.find(cpu => cpu.cpuId === cpuId);
+  return (
+    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+      Memória utilizada
+      {mainCpu?.memory.getUsageRate() === undefined ? (
+        <LinearProgressWithLabel
+          variant="determinate"
+          color="secondary"
+          value={0}
+          style={{ height: 8 }} />
+      ) : (
+        <LinearProgressWithLabel
+          variant="determinate"
+          color="secondary"
+          value={mainCpu?.memory.getUsageRate()}
+          style={{ height: 8 }} />
+      )}
+    </Typography>
+  );
+}
+
+function CardButtons() {
+  return (
+    <>
+      <PlayArrowIcon style={{ marginLeft: 5, marginRight: 5 }} />
+      <PauseIcon style={{ marginLeft: 5, marginRight: 5 }} />
+      <DeleteIcon style={{ marginLeft: 5, marginRight: 5 }} />
+    </>
+  )
+}
+
+function IoValue() {
+  const { cpus, io, forceUpdate } = React.useContext(cpuContext);
+  return (
+    <>
+      <Typography sx={{ mb: 0 }} color="text.secondary">
+        IO
+      </Typography>
+      {
+        io?.activeRequest == null ? (
+          <LinearProgressWithLabel
+            variant="determinate"
+            color="secondary"
+            value={0}
+            style={{ height: 8 }} />
+        ) : (
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            Processando: {io?.activeRequest.process.pId}
+            {io?.runningPercentage && (
+              <LinearProgressWithLabel
+                variant="determinate"
+                color="primary"
+                value={io?.runningPercentage}
+                style={{ height: 8 }}
+              ></LinearProgressWithLabel>
+            )}
+          </Typography>
+        )
+      }
+    </>
+  );
+}
+
 const CpuCard = ({ cpuId }: CpuCardProps) => {
   // eslint-disable-next-line
   const { cpus, io, forceUpdate } = React.useContext(cpuContext);
@@ -37,6 +105,9 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
               CPU {mainCpu?.cpuId}
             </Typography>
           </Badge>
+          <Badge style={{ marginLeft: 63, color: '#808080' }}>
+            <CardButtons />
+          </Badge>
 
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             Estado: {mainCpu?.active ? 'Ativo' : 'Inativo'}
@@ -50,45 +121,6 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
               style={{ height: 8 }}
             ></LinearProgressWithLabel>
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Memória utilizada
-            {mainCpu?.memory.getUsageRate() === undefined ? (
-              <LinearProgressWithLabel
-                variant="determinate"
-                color="secondary"
-                value={0}
-                style={{ height: 8 }}
-              />
-            ) : (
-              <LinearProgressWithLabel
-                variant="determinate"
-                color="secondary"
-                value={mainCpu?.memory.getUsageRate()}
-                style={{ height: 8 }}
-              />
-            )}
-          </Typography>
-
-          <Typography variant="h5" component="div" sx={{ mt: 1.75 }}>
-            IO
-          </Typography>
-          {io?.activeRequest == null ? (
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              Processando: -
-            </Typography>
-          ) : (
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              Processando: {io?.activeRequest.process.pId}
-              {io?.runningPercentage && (
-                <LinearProgressWithLabel
-                  variant="determinate"
-                  color="primary"
-                  value={io?.runningPercentage}
-                  style={{ height: 8 }}
-                ></LinearProgressWithLabel>
-              )}
-            </Typography>
-          )}
         </CardContent>
       </Card>
     );
@@ -97,4 +129,4 @@ const CpuCard = ({ cpuId }: CpuCardProps) => {
   }
 };
 
-export default CpuCard;
+export { CpuCard, MemoryUsage, IoValue };

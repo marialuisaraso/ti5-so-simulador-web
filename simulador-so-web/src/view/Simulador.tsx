@@ -15,7 +15,7 @@ import DrawerMenu from './MainPage/DrawerMenu';
 import AppBar from './MainPage/AppBar';
 import ProcessesDisplay from './MainPage/ProcessesDisplay';
 import { cpuContext } from './context/CpuContext';
-import CpuCard from './components/CpuCard';
+import { CpuCard, MemoryUsage, IoValue } from './components/CpuCard';
 import { Process } from '../simulator/model/process';
 
 enum actionModes {
@@ -71,6 +71,8 @@ export default function Simulador() {
               </Grid>
               <Grid item xs={3}>
                 <>
+                  <MemoryUsage />
+                  <IoValue />
                   {cpus?.map((cpu, index) => {
                     return <CpuCard key={index} cpuId={cpu.cpuId} />;
                   })}
@@ -91,8 +93,8 @@ export default function Simulador() {
           mode === actionModes.Exclude
             ? 'Excluir'
             : mode === actionModes.Suspend
-            ? 'Suspender'
-            : 'Acordar'
+              ? 'Suspender'
+              : 'Acordar'
         }
         action={(e: Process) => {
           if (mode === actionModes.Exclude && cpus) cpus[0]?.excludeProcess(e.pId);
