@@ -18,7 +18,7 @@ import {
 
 import { Button, CanvasButton1, CanvasButton2 } from './components/Button';
 import pixelToRem from './utils/pxToRem';
-import { main, start, stop, cpus } from '../simulator/main';
+import { main, start, stop, clusters } from '../simulator/main';
 import React from 'react';
 
 function useForceUpdate() {
@@ -29,7 +29,7 @@ function useForceUpdate() {
 }
 
 function App() {
-  const cpu = cpus[0];
+  const cpu = clusters[0].cpus[0];
   const forceUpdate = useForceUpdate();
   const [cpuState, setCpuState] = React.useState(cpu);
   // const forceUpdate = React.useCallback(() => updateState(undefined), []);
@@ -64,13 +64,17 @@ function App() {
 
         <SimulatorTitle id="simulador">GERÊNCIA DE PROCESSOS</SimulatorTitle>
         <SimulatorCanvas>
-          <div onClick={() => cpu.addProcess({ executionSize: 10000, memorySize: 30 })}>
+          <div onClick={() => clusters[0].addProcess({ executionSize: 10000, memorySize: 30 })}>
             <CanvasButton1 text="NOVO" />
           </div>
-          <div onClick={() => cpu.addProcess({ executionSize: null, memorySize: 4, priority: 4 })}>
+          <div
+            onClick={() =>
+              clusters[0].addProcess({ executionSize: null, memorySize: 4, priority: 4 })
+            }
+          >
             <CanvasButton1 text="PAUSAR" />
           </div>
-          <div onClick={() => cpu.addProcess({ executionSize: 100000 })}>
+          <div onClick={() => clusters[0].addProcess({ executionSize: 100000 })}>
             <CanvasButton1 text="FINALIZAR" />
           </div>
         </SimulatorCanvas>

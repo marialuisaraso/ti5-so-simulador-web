@@ -25,7 +25,7 @@ enum actionModes {
 }
 
 export default function Simulador() {
-  const { cpus, forceUpdate } = React.useContext(cpuContext);
+  const { clusters, forceUpdate } = React.useContext(cpuContext);
 
   // ESTADO DO MENU(DRAWER) LATERAL
   const [open, setOpen] = React.useState(false);
@@ -60,27 +60,32 @@ export default function Simulador() {
         </AppBar>
 
         {/* FORA DO MENU(DRAWER) - CANVAS DO SIMULADOR EM SI */}
-        <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
-          <Container flex="column" margin={pixelToRem(70, 112, 50)}>
-            <SimulatorTitle>GERÊNCIA DE PROCESSOS</SimulatorTitle>
-            <Grid container sx={{ height: '100%' }} columnSpacing={2}>
-              <Grid item xs={9}>
-                <SimulatorCanvas>
-                  <ProcessesDisplay />
-                </SimulatorCanvas>
-              </Grid>
-              <Grid item xs={3}>
-                <>
-                  <MemoryUsage />
-                  <IoValue />
-                  {cpus?.map((cpu, index) => {
-                    return <CpuCard key={index} cpuId={cpu.cpuId} />;
-                  })}
-                </>
-              </Grid>
-            </Grid>
-          </Container>
-        </Box>
+        {clusters?.map((cluster, cindex) => {
+          let cpus = cluster.cpus;
+          return (
+            <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
+              <Container flex="column" margin={pixelToRem(70, 112, 50)}>
+                <SimulatorTitle>GERÊNCIA DE PROCESSOS</SimulatorTitle>
+                <Grid container sx={{ height: '100%' }} columnSpacing={2}>
+                  <Grid item xs={9}>
+                    <SimulatorCanvas>
+                      <ProcessesDisplay key={cindex} clusterId={cluster.clusterId} />
+                    </SimulatorCanvas>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <>
+                      <MemoryUsage key={cindex} clusterId={cluster.clusterId} />
+                      <IoValue key={cindex} clusterId={cluster.clusterId} />
+                      {cpus?.map((cpu, index) => (
+                        <CpuCard key={index} clusterId={cluster.clusterId} cpuId={cpu.cpuId} />
+                      ))}
+                    </>
+                  </Grid>
+                </Grid>
+              </Container>
+            </Box>
+          );
+        })}
       </Box>
 
       {/* MODAL QUE ABRE EM ADICIONAR PROCESSO */}
@@ -93,13 +98,13 @@ export default function Simulador() {
           mode === actionModes.Exclude
             ? 'Excluir'
             : mode === actionModes.Suspend
-              ? 'Suspender'
-              : 'Acordar'
+            ? 'Suspender'
+            : 'Acordar'
         }
         action={(e: Process) => {
-          if (mode === actionModes.Exclude && cpus) cpus[0]?.excludeProcess(e.pId);
-          else if (mode === actionModes.Suspend && cpus) cpus[0]?.suspendProcess(e.pId);
-          else if (cpus) cpus[0]?.wakeProcess(e.pId);
+          if (mode === actionModes.Exclude && clusters) clusters[0]?.excludeProcess(e.pId);
+          else if (mode === actionModes.Suspend && clusters) clusters[0]?.suspendProcess(e.pId);
+          else if (clusters) clusters[0]?.wakeProcess(e.pId);
         }}
         displayIcon={
           mode === actionModes.Exclude ? (

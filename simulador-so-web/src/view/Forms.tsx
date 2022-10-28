@@ -6,7 +6,8 @@ import { cpuContext } from './context/CpuContext';
 import React from 'react';
 
 export default function BasicTextFields(this: any) {
-  const { cpus, forceUpdate } = React.useContext(cpuContext);
+  // eslint-disable-next-line
+  const { clusters, forceUpdate } = React.useContext(cpuContext);
   const [openAlert, setOpenAlert] = React.useState(false);
   const [message, setMessage] = React.useState<any>('');
   const { control, handleSubmit } = useForm({
@@ -19,7 +20,7 @@ export default function BasicTextFields(this: any) {
   });
   const onSubmit = (data: any) => {
     try {
-      if (cpus) cpus[0]?.addProcess(data);
+      if (clusters) clusters[0]?.addProcess(data);
     } catch (e) {
       setOpenAlert(true);
       setMessage(e);

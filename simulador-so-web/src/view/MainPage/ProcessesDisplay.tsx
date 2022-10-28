@@ -26,13 +26,19 @@ const columns: GridColDef[] = [
   },
 ];
 
-const ProcessesDisplay = () => {
+type ProcessesDisplayProps = {
+  clusterId?: number;
+};
+
+const ProcessesDisplay = ({ clusterId }: ProcessesDisplayProps) => {
   const [rows, setRows] = React.useState<Array<Process>>([]);
-  const { cpus, forceUpdate } = React.useContext(cpuContext);
+  const { clusters, forceUpdate } = React.useContext(cpuContext);
+  const cluster = clusters?.find(c => c.clusterId === clusterId);
 
   React.useEffect(() => {
-    if (cpus) setRows([...cpus[0].allProcess]);
+    if (cluster) setRows([...cluster.allProcess]);
   }, [forceUpdate]);
+
   return <DataGrid rows={rows} columns={columns} getRowId={row => row.pId} />;
 };
 

@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 
 type CpuCardProps = {
   cpuId?: number;
+  clusterId?: number;
 };
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
@@ -26,24 +27,26 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
   );
 }
 
-function MemoryUsage({ cpuId }: CpuCardProps) {
-  const { cpus, io, forceUpdate } = React.useContext(cpuContext);
-  const mainCpu = cpus?.find(cpu => cpu.cpuId === cpuId);
+function MemoryUsage({ clusterId }: CpuCardProps) {
+  const { clusters, forceUpdate } = React.useContext(cpuContext);
+  const cluster = clusters?.find(c => c.clusterId === clusterId);
   return (
     <Typography sx={{ mb: 1.5 }} color="text.secondary">
       Memória utilizada
-      {mainCpu?.memory.getUsageRate() === undefined ? (
+      {cluster?.memory.getUsageRate() === undefined ? (
         <LinearProgressWithLabel
           variant="determinate"
           color="secondary"
           value={0}
-          style={{ height: 8 }} />
+          style={{ height: 8 }}
+        />
       ) : (
         <LinearProgressWithLabel
           variant="determinate"
           color="secondary"
-          value={mainCpu?.memory.getUsageRate()}
-          style={{ height: 8 }} />
+          value={cluster?.memory.getUsageRate()}
+          style={{ height: 8 }}
+        />
       )}
     </Typography>
   );
@@ -56,45 +59,47 @@ function CardButtons() {
       <PauseIcon style={{ marginLeft: 5, marginRight: 5 }} />
       <DeleteIcon style={{ marginLeft: 5, marginRight: 5 }} />
     </>
-  )
+  );
 }
 
-function IoValue() {
-  const { cpus, io, forceUpdate } = React.useContext(cpuContext);
+function IoValue({ clusterId }: CpuCardProps) {
+  const { clusters, forceUpdate } = React.useContext(cpuContext);
+  const io = clusters?.find(c => c.clusterId === clusterId)?.io;
   return (
     <>
       <Typography sx={{ mb: 0 }} color="text.secondary">
         IO
       </Typography>
-      {
-        io?.activeRequest == null ? (
-          <LinearProgressWithLabel
-            variant="determinate"
-            color="secondary"
-            value={0}
-            style={{ height: 8 }} />
-        ) : (
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Processando: {io?.activeRequest.process.pId}
-            {io?.runningPercentage && (
-              <LinearProgressWithLabel
-                variant="determinate"
-                color="primary"
-                value={io?.runningPercentage}
-                style={{ height: 8 }}
-              ></LinearProgressWithLabel>
-            )}
-          </Typography>
-        )
-      }
+      {io?.activeRequest == null ? (
+        <LinearProgressWithLabel
+          variant="determinate"
+          color="secondary"
+          value={0}
+          style={{ height: 8 }}
+        />
+      ) : (
+        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+          Processando: {io?.activeRequest.process.pId}
+          {io?.runningPercentage && (
+            <LinearProgressWithLabel
+              variant="determinate"
+              color="primary"
+              value={io?.runningPercentage}
+              style={{ height: 8 }}
+            ></LinearProgressWithLabel>
+          )}
+        </Typography>
+      )}
     </>
   );
 }
 
-const CpuCard = ({ cpuId }: CpuCardProps) => {
+const CpuCard = ({ cpuId, clusterId }: CpuCardProps) => {
   // eslint-disable-next-line
-  const { cpus, io, forceUpdate } = React.useContext(cpuContext);
-  const mainCpu = cpus?.find(cpu => cpu.cpuId === cpuId);
+  const { clusters, forceUpdate } = React.useContext(cpuContext);
+  const cluster = clusters?.find(c => c.clusterId === clusterId);
+  const io = cluster?.io;
+  const mainCpu = cluster?.cpus?.find(cpu => cpu.cpuId === cpuId);
 
   if (mainCpu) {
     return (

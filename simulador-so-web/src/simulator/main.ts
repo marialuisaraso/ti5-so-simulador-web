@@ -1,39 +1,33 @@
 import { Queue } from './model/shared/queue';
 import { CPU } from './model/cpu';
 import { Process } from './model/process';
+import { Cluster } from './model/cluster';
 import { IO } from './model/io';
 
-export var cpus: Array<CPU>;
-export var ios: Array<IO>;
+export var clusters: Array<Cluster>;
 
-export function main(hook?: Function, numberOfCpu?: number) {
-    let q = new Queue<Process>();
-    cpus = new Array<CPU>();
-    ios = new Array<IO>();
-    numberOfCpu = numberOfCpu ? numberOfCpu : 1;
-    for (let i = 0; i < numberOfCpu; i++) {
-        const cpu = new CPU({ readyQueue: q, hook });
-        const io = new IO({ queue: cpu.ioQueue, hook });
-        cpus.push(cpu);
-        ios.push(io);
-        io.start();
-    }
+export function main(hook?: Function) {
+    clusters = new Array<Cluster>();
+    clusters.push(new Cluster({ hook }));
+    clusters[0].addCpu();
+    clusters[0].addCpu();
+    clusters[0].addCpu();
+
+    clusters.push(new Cluster({ hook }));
+    clusters[1].addCpu();
+
     if (hook) hook();
     // io = new CPU({readyQueue:cpu.ioQueue, hook})
 }
 
 export function start() {
-    cpus.forEach(cpu => {
-        cpu.start();
-    });
+    clusters.forEach(c => c.startAll());
 }
 
 export function stop() {
-    cpus.forEach(cpu => {
-        cpu.stop();
-    });
+    clusters.forEach(c => c.stopAll());
 }
 
 if (typeof require !== 'undefined' && require.main === module) {
-    main();
+    main(() => console.log(clusters));
 }

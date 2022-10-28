@@ -31,12 +31,14 @@ export class CPU {
         hook,
         suspendedQueue,
         allProcess,
+        memory,
         ioQueue,
     }: {
         readyQueue?: Queue<Process>;
         hook?: Function;
         suspendedQueue?: Array<Process>;
         allProcess?: Array<Process>;
+        memory?: Memory;
         ioQueue?: Queue<IORequest>;
     }) {
         this.cpuId = CPU.nextId;
@@ -47,7 +49,7 @@ export class CPU {
         this.suspendedQueue = suspendedQueue ?? new Array<Process>();
         this.allProcess = allProcess ?? new Array<Process>();
         this.ioQueue = ioQueue ?? new Queue<IORequest>();
-        this.memory = new Memory();
+        this.memory = memory ?? new Memory();
     }
 
     stop() {
@@ -124,55 +126,6 @@ export class CPU {
                 resolve();
             }, execTime / runDivide);
         });
-    }
-
-    public addProcess({
-        executionSize,
-        memorySize,
-        priority,
-        ioPeriod,
-    }: {
-        executionSize?: number | null;
-        memorySize?: number;
-        priority?: number;
-        ioPeriod?: number;
-    }) {
-        const newProcess = new Process(executionSize, memorySize, priority, ioPeriod);
-        this.memory.checkToAdd(newProcess);
-        this.readyQueue.push(newProcess, newProcess.priority);
-        this.allProcess.push(newProcess);
-        this.memory.add(newProcess);
-
-        // reinicia o método run que foi parado
-        // if (this.readyQueue.isEmpty() && !this.runningJob && this.active) this.start();
-
-        this.hook();
-    }
-
-    public suspendProcess(pId: number): void {
-        const process = this.allProcess.find(e => e.pId === pId);
-        if (process) process.determineNextState(processActions.Suspend);
-        this.hook();
-    }
-
-    public wakeProcess(pId: number): void {
-        let processidx = this.suspendedQueue.findIndex(e => e.pId === pId);
-        if (processidx === -1) return;
-
-        let process = this.suspendedQueue.splice(processidx, 1)[0];
-        if (process) process.determineNextState(processActions.Wake);
-
-        this.readyQueue.push(process, process.priority);
-        this.hook();
-    }
-
-    public excludeProcess(pId: number): void {
-        const process = this.allProcess.find(e => e.pId === pId);
-        if (process) {
-            process.determineNextState(processActions.Terminate);
-            this.memory.remove(process.pId);
-        }
-        this.hook();
     }
 
     private sendToIO(process: Process) {
