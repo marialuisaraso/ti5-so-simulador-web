@@ -67,7 +67,7 @@ export class Cluster {
             while (cpu.runningJob) {
                 await new Promise<void>(resolve => setTimeout(() => resolve(), 1000));
             }
-            this.cpus.filter(c => c.cpuId !== id);
+            this.cpus = this.cpus.filter(c => c.cpuId !== id);
             this.hook();
         }
     }
@@ -124,5 +124,15 @@ export class Cluster {
             this.memory.remove(process.pId);
         }
         this.hook();
+    }
+
+    public stopCpu(cpuId: number): void {
+        let cpu = this.cpus.find(e => e.cpuId === cpuId);
+        if (cpu) cpu.stop();
+    }
+
+    public startCpu(cpuId: number): void {
+        let cpu = this.cpus.find(e => e.cpuId === cpuId);
+        if (cpu) cpu.start();
     }
 }

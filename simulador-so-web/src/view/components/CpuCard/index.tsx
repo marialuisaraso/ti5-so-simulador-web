@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Badge, Card, CardContent, Typography } from '@mui/material';
+import { Badge, Card, CardContent, IconButton, Typography } from '@mui/material';
 import { cpuContext } from '../../context/CpuContext';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -8,7 +8,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 
 type CpuCardProps = {
-  cpuId?: number;
+  cpuId: number;
+  clusterId?: number;
+};
+
+type ProgressProps = {
   clusterId?: number;
 };
 
@@ -27,7 +31,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
   );
 }
 
-function MemoryUsage({ clusterId }: CpuCardProps) {
+function MemoryUsage({ clusterId }: ProgressProps) {
   const { clusters, forceUpdate } = React.useContext(cpuContext);
   const cluster = clusters?.find(c => c.clusterId === clusterId);
   return (
@@ -52,17 +56,7 @@ function MemoryUsage({ clusterId }: CpuCardProps) {
   );
 }
 
-function CardButtons() {
-  return (
-    <>
-      <PlayArrowIcon style={{ marginLeft: 5, marginRight: 5 }} />
-      <PauseIcon style={{ marginLeft: 5, marginRight: 5 }} />
-      <DeleteIcon style={{ marginLeft: 5, marginRight: 5 }} />
-    </>
-  );
-}
-
-function IoValue({ clusterId }: CpuCardProps) {
+function IoValue({ clusterId }: ProgressProps) {
   const { clusters, forceUpdate } = React.useContext(cpuContext);
   const io = clusters?.find(c => c.clusterId === clusterId)?.io;
   return (
@@ -100,7 +94,21 @@ const CpuCard = ({ cpuId, clusterId }: CpuCardProps) => {
             </Typography>
           </Badge>
           <Badge style={{ marginLeft: 63, color: '#808080' }}>
-            <CardButtons />
+            <IconButton
+              onClick={() => clusters?.find(e => e.clusterId === clusterId)?.startCpu(cpuId)}
+            >
+              <PlayArrowIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => clusters?.find(e => e.clusterId === clusterId)?.stopCpu(cpuId)}
+            >
+              <PauseIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => clusters?.find(e => e.clusterId === clusterId)?.removeCPU(cpuId)}
+            >
+              <DeleteIcon />
+            </IconButton>
           </Badge>
 
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
