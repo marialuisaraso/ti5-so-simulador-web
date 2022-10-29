@@ -10,9 +10,9 @@ import {
   ListItemText,
 } from '@mui/material';
 import React from 'react';
+
 import { cpuContext } from '../context/CpuContext';
 import { addModalStyle } from '../estilos/styles';
-import CommentIcon from '@mui/icons-material/Comment';
 
 type AddProcessFormProps = {
   open: boolean;

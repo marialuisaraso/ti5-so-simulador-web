@@ -39,7 +39,7 @@ export default function Simulador() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ py: 10, pl: 10 }}>
         <CssBaseline />
         <AppBar position="fixed" open={open} style={{ backgroundColor: '#680079' }}>
           <Toolbar>
@@ -63,26 +63,28 @@ export default function Simulador() {
         {clusters?.map((cluster, cindex) => {
           let cpus = cluster.cpus;
           return (
-            <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
-              <Container flex="column" margin={pixelToRem(70, 112, 50)}>
-                <SimulatorTitle>GERÊNCIA DE PROCESSOS</SimulatorTitle>
-                <Grid container sx={{ height: '100%' }} columnSpacing={2}>
-                  <Grid item xs={9}>
-                    <SimulatorCanvas>
-                      <ProcessesDisplay key={cindex} clusterId={cluster.clusterId} />
-                    </SimulatorCanvas>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <>
-                      <MemoryUsage key={cindex} clusterId={cluster.clusterId} />
-                      <IoValue key={cindex} clusterId={cluster.clusterId} />
-                      {cpus?.map((cpu, index) => (
-                        <CpuCard key={index} clusterId={cluster.clusterId} cpuId={cpu.cpuId} />
-                      ))}
-                    </>
-                  </Grid>
+            <Box component="main" sx={{ p: 2 }} key={cluster.clusterId + cindex}>
+              <SimulatorTitle>Cluster {cindex + 1}</SimulatorTitle>
+              <Grid container sx={{ height: '100%' }} columnSpacing={2}>
+                <Grid item xs={9}>
+                  <SimulatorCanvas>
+                    <ProcessesDisplay clusterId={cluster.clusterId} />
+                  </SimulatorCanvas>
                 </Grid>
-              </Container>
+                <Grid item xs={3}>
+                  <>
+                    <MemoryUsage clusterId={cluster.clusterId} />
+                    <IoValue clusterId={cluster.clusterId} />
+                    {cpus?.map((cpu, index) => (
+                      <CpuCard
+                        key={cpu.cpuId + index}
+                        clusterId={cluster.clusterId}
+                        cpuId={cpu.cpuId}
+                      />
+                    ))}
+                  </>
+                </Grid>
+              </Grid>
             </Box>
           );
         })}
