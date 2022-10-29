@@ -10,6 +10,9 @@ import AddIcon from '@mui/icons-material/Add';
 import AdbRoundedIcon from '@mui/icons-material/AdbRounded';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
+import MemoryIcon from '@mui/icons-material/Memory';
+import QueueIcon from '@mui/icons-material/Queue';
+
 import { start, stop } from '../../simulator/main';
 import DiscreteSlider from '../slider';
 import DrawerItem from './DrawerComponents/DrawerItem';
@@ -21,16 +24,14 @@ import { cpuContext } from '../context/CpuContext';
 type AddProcessFormProps = {
   open: boolean;
   handleClose: Function;
-  handleAddModalOpen: Function;
-  handleExcludeModalOpen: Function;
+  handleModalOpen: Function;
   handleModeOperation: Function;
 };
 
 const DrawerMenu = ({
   open,
   handleClose,
-  handleAddModalOpen,
-  handleExcludeModalOpen,
+  handleModalOpen,
   handleModeOperation,
 }: AddProcessFormProps) => {
   const { clusters, forceUpdate } = React.useContext(cpuContext);
@@ -48,20 +49,17 @@ const DrawerMenu = ({
     if (text === 'Parar') {
       stop();
     }
-    if (text === 'Adicionar') {
-      handleAddModalOpen();
+    if (text === 'Processos') {
+      handleModeOperation(0);
+      return handleModalOpen();
     }
-    if (text === 'Suspender') {
-      handleModeOperation(2);
-      return handleExcludeModalOpen();
-    }
-    if (text === 'Excluir') {
+    if (text === 'CPUs') {
       handleModeOperation(1);
-      return handleExcludeModalOpen();
+      return handleModalOpen();
     }
-    if (text === 'Acordar') {
-      handleModeOperation(3);
-      return handleExcludeModalOpen();
+    if (text === 'Clusters') {
+      handleModeOperation(1);
+      return handleModalOpen();
     }
     return 0;
   };
@@ -97,16 +95,15 @@ const DrawerMenu = ({
       <List>
         {open ? (
           <Typography style={{ marginLeft: 23, marginTop: 10, fontWeight: 'bold' }}>
-            PROCESSOS
+            Adicionar
           </Typography>
         ) : null}
-        {['Adicionar', 'Excluir', 'Suspender', 'Acordar'].map((text, index) => (
+        {['Processos', 'CPUs', 'Clusters'].map((text, index) => (
           <DrawerItem key={text} isOpen={open} text={text} action={() => checkMenuText(text)}>
             <>
               {index === 0 ? <AddIcon /> : null}
-              {index === 1 ? <DeleteIcon /> : null}
-              {index === 2 ? <HourglassTopIcon /> : null}
-              {index === 3 ? <VisibilityIcon /> : null}
+              {index === 1 ? <MemoryIcon /> : null}
+              {index === 2 ? <QueueIcon /> : null}
             </>
           </DrawerItem>
         ))}

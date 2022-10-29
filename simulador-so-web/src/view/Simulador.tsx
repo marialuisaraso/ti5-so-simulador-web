@@ -1,27 +1,33 @@
 import * as React from 'react';
-import { Box, Toolbar, IconButton, CssBaseline, Typography, Grid } from '@mui/material';
+import {
+  Box,
+  Toolbar,
+  IconButton,
+  CssBaseline,
+  Typography,
+  Grid,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ThemeProvider } from '@mui/material/styles';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
-import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 
-import { Container, SimulatorTitle, SimulatorCanvas } from './estilos/styles';
+import { SimulatorTitle, SimulatorCanvas } from './estilos/styles';
 import { darkTheme } from './estilos/globalstyles';
-import pixelToRem from './utils/pxToRem';
-import AddProcessForm from './MainPage/AddProcessForm';
-import ProcessModal from './MainPage/ProcessModal';
 import DrawerMenu from './MainPage/DrawerMenu';
 import AppBar from './MainPage/AppBar';
 import ProcessesDisplay from './MainPage/ProcessesDisplay';
 import { cpuContext } from './context/CpuContext';
 import { CpuCard, MemoryUsage, IoValue } from './components/CpuCard';
-import { Process } from '../simulator/model/process';
+import AddForm from './AddForm';
+import MainModal from './MainPage/MainModal';
 
 enum actionModes {
-  Exclude = 1,
-  Suspend = 2,
-  Wake = 3,
+  Process = 0,
+  CPU = 1,
 }
 
 export default function Simulador() {
@@ -30,12 +36,14 @@ export default function Simulador() {
   // ESTADO DO MENU(DRAWER) LATERAL
   const [open, setOpen] = React.useState(false);
 
-  // ESTADO DO MODAL DE ADICIONAR PROCESSO
-  const [openAddModal, setAddModalOpen] = React.useState(false);
-
-  // ESTADO DO MODAL DE EXCLUIR PROCESSO
-  const [openExcludeModal, setExcludeModalOpen] = React.useState(false);
+  // ESTADO DO MODAL
+  const [openMainModal, setMainModalOpen] = React.useState(false);
   const [mode, setMode] = React.useState(1);
+  const [cluster, setCluster] = React.useState<number>(0);
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setCluster(Number(event.target.value));
+  };
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -90,40 +98,44 @@ export default function Simulador() {
         })}
       </Box>
 
-      {/* MODAL QUE ABRE EM ADICIONAR PROCESSO */}
-      <AddProcessForm open={openAddModal} handleClose={setAddModalOpen} />
-      {/* MODAL QUE ABRE EM EXCLUIR PROCESSO */}
-      <ProcessModal
-        open={openExcludeModal}
-        handleClose={setExcludeModalOpen}
-        title={
-          mode === actionModes.Exclude
-            ? 'Excluir'
-            : mode === actionModes.Suspend
-            ? 'Suspender'
-            : 'Acordar'
-        }
-        action={(e: Process) => {
-          if (mode === actionModes.Exclude && clusters) clusters[0]?.excludeProcess(e.pId);
-          else if (mode === actionModes.Suspend && clusters) clusters[0]?.suspendProcess(e.pId);
-          else if (clusters) clusters[0]?.wakeProcess(e.pId);
-        }}
-        displayIcon={
-          mode === actionModes.Exclude ? (
-            <DeleteIcon />
-          ) : mode === actionModes.Suspend ? (
-            <HourglassTopIcon />
-          ) : (
-            <VisibilityIcon />
-          )
-        }
-      />
+      <MainModal open={openMainModal} handleClose={setMainModalOpen}>
+        <>
+          <Typography
+            id="transition-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ marginBottom: 20, fontWeight: 'bold' }}
+          >
+            Adicionar {mode === actionModes.Process ? 'Processo' : 'CPU'}
+          </Typography>
+          <FormControl fullWidth sx={{ mb: 3 }}>
+            <InputLabel>Cluster</InputLabel>
+            <Select label="Cluster" onChange={handleChange} value={JSON.stringify(cluster)}>
+              {clusters?.map((cluster, idx) => (
+                <MenuItem value={cluster.clusterId}>Cluster {idx + 1}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <AddForm
+            mode={mode}
+            handleExternalSubmit={(data: any) => {
+              let clusterIdx = clusters?.findIndex(e => e.clusterId === cluster);
+              if (mode === actionModes.Process) {
+                if (clusters)
+                  clusters[clusterIdx === -1 || !clusterIdx ? 0 : clusterIdx]?.addProcess(data);
+              } else {
+                if (clusters) clusters[clusterIdx === -1 || !clusterIdx ? 0 : clusterIdx]?.addCpu();
+              }
+            }}
+          />
+        </>
+      </MainModal>
 
       <DrawerMenu
         open={open}
         handleClose={setOpen}
-        handleAddModalOpen={() => setAddModalOpen(true)}
-        handleExcludeModalOpen={() => setExcludeModalOpen(true)}
+        handleModalOpen={() => setMainModalOpen(true)}
         handleModeOperation={(newMode: number) => setMode(newMode)}
       />
     </ThemeProvider>
