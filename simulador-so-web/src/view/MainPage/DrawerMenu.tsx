@@ -1,14 +1,11 @@
 import { Divider, IconButton, List, Typography, useTheme } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import DeleteIcon from '@mui/icons-material/Delete';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
-import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AddIcon from '@mui/icons-material/Add';
 import AdbRoundedIcon from '@mui/icons-material/AdbRounded';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import MemoryIcon from '@mui/icons-material/Memory';
 import QueueIcon from '@mui/icons-material/Queue';
@@ -20,6 +17,9 @@ import Drawer from './DrawerComponents/Drawer';
 import DrawerHeader from './DrawerComponents/DrawerHeader';
 import React from 'react';
 import { cpuContext } from '../context/CpuContext';
+
+import { clusters as gambis } from '../../simulator/main';
+import { Cluster } from '../../simulator/model/cluster';
 
 type AddProcessFormProps = {
   open: boolean;
@@ -58,8 +58,8 @@ const DrawerMenu = ({
       return handleModalOpen();
     }
     if (text === 'Clusters') {
-      handleModeOperation(1);
-      return handleModalOpen();
+      gambis.push(new Cluster({ hook: forceUpdate }));
+      forceUpdate();
     }
     return 0;
   };
