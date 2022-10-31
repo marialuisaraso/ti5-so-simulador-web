@@ -95,7 +95,7 @@ const DrawerMenu = ({
       <List>
         {open ? (
           <Typography style={{ marginLeft: 23, marginTop: 10, fontWeight: 'bold' }}>
-            Adicionar
+            ADICIONAR
           </Typography>
         ) : null}
         {['Processos', 'CPUs', 'Clusters'].map((text, index) => (
