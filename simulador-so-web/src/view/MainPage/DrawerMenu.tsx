@@ -10,16 +10,13 @@ import AdbRoundedIcon from '@mui/icons-material/AdbRounded';
 import MemoryIcon from '@mui/icons-material/Memory';
 import QueueIcon from '@mui/icons-material/Queue';
 
-import { start, stop } from '../../simulator/main';
+import { start, stop, addCluster } from '../../simulator/main';
 import DiscreteSlider from '../slider';
 import DrawerItem from './DrawerComponents/DrawerItem';
 import Drawer from './DrawerComponents/Drawer';
 import DrawerHeader from './DrawerComponents/DrawerHeader';
 import React from 'react';
 import { cpuContext } from '../context/CpuContext';
-
-import { clusters as gambis } from '../../simulator/main';
-import { Cluster } from '../../simulator/model/cluster';
 
 type AddProcessFormProps = {
   open: boolean;
@@ -38,8 +35,7 @@ const DrawerMenu = ({
   const [roundRobin, setRoundRobin] = React.useState(1);
 
   React.useEffect(() => {
-    if (clusters)
-      clusters.forEach(c => c.cpus.forEach(cpu => cpu.setRoundRobin(roundRobin * 1000)));
+    if (clusters) clusters.forEach(c => c.setRoundRobin(roundRobin * 1000));
   }, [roundRobin]);
   //FUNÇÃO QUE CONFERE O TEXTO DO BOTÃO DO MENU LATERAL PARA ASSOCIÁ-LO À FUNÇÃO CERTA DO SIMULADOR
   const checkMenuText = (text: string) => {
@@ -58,7 +54,7 @@ const DrawerMenu = ({
       return handleModalOpen();
     }
     if (text === 'Clusters') {
-      gambis.push(new Cluster({ hook: forceUpdate }));
+      addCluster(forceUpdate);
       forceUpdate();
     }
     return 0;

@@ -26,7 +26,7 @@ export const CpuProvider = ({ children }: ProviderProps) => {
   const forceUpdate = useForceUpdate();
 
   useEffect(() => {
-    main(forceUpdate);
+    if (!clusters) main(forceUpdate);
   }, []);
 
   return (
