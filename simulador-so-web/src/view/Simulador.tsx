@@ -77,28 +77,28 @@ export default function Simulador() {
         {clusters?.map((cluster, cindex) => {
           let cpus = cluster.cpus;
           return (
-            <Box component="main" sx={{ p: 2 }} key={cluster.clusterId + cindex}>
-              <Grid container sm={9} alignItems="center" justifyContent={'space-between'}>
-                <Grid item>
-                  <SimulatorTitle>Cluster {cluster.clusterId}</SimulatorTitle>
-                </Grid>
-                <Grid item>
-                  <IconButton onClick={() => cluster.startAll()}>
-                    <PlayArrowIcon />
-                  </IconButton>
-                  <IconButton onClick={() => cluster.stopAll()}>
-                    <PauseIcon />
-                  </IconButton>
-                  <IconButton onClick={() => removeCluster(cluster.clusterId)}>
-                    <DeleteIcon />
-                  </IconButton>
-                  <IconButton onClick={() => cluster.addCpu()}>
-                    <MemoryIcon />
-                  </IconButton>
-                </Grid>
-              </Grid>
-              <Grid container sx={{ height: '100%' }} columnSpacing={2}>
+            <Box component="main" sx={{ p: 2, mb: 5 }} key={cluster.clusterId + cindex}>
+              <Grid container sx={{ height: '100%', 'min-height': '256px' }} columnSpacing={2}>
                 <Grid item xs={9}>
+                  <Grid container xs={12} alignItems="center" justifyContent={'space-between'}>
+                    <Grid item>
+                      <SimulatorTitle>Cluster {cluster.clusterId}</SimulatorTitle>
+                    </Grid>
+                    <Grid item>
+                      <IconButton onClick={() => cluster.startAll()}>
+                        <PlayArrowIcon />
+                      </IconButton>
+                      <IconButton onClick={() => cluster.stopAll()}>
+                        <PauseIcon />
+                      </IconButton>
+                      <IconButton onClick={() => removeCluster(cluster.clusterId)}>
+                        <DeleteIcon />
+                      </IconButton>
+                      <IconButton onClick={() => cluster.addCpu()}>
+                        <MemoryIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
                   <SimulatorCanvas>
                     <ProcessesDisplay clusterId={cluster.clusterId} />
                   </SimulatorCanvas>
