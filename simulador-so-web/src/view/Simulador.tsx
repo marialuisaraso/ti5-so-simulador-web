@@ -24,6 +24,12 @@ import { cpuContext } from './context/CpuContext';
 import { CpuCard, MemoryUsage, IoValue } from './components/CpuCard';
 import AddForm from './AddForm';
 import MainModal from './MainPage/MainModal';
+import PauseIcon from '@mui/icons-material/Pause';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import DeleteIcon from '@mui/icons-material/Delete';
+import MemoryIcon from '@mui/icons-material/Memory';
+
+import { removeCluster } from '../simulator/main';
 
 enum actionModes {
   Process = 0,
@@ -72,7 +78,25 @@ export default function Simulador() {
           let cpus = cluster.cpus;
           return (
             <Box component="main" sx={{ p: 2 }} key={cluster.clusterId + cindex}>
-              <SimulatorTitle>Cluster {cindex + 1}</SimulatorTitle>
+              <Grid container sm={9} alignItems="center" justifyContent={'space-between'}>
+                <Grid item>
+                  <SimulatorTitle>Cluster {cluster.clusterId}</SimulatorTitle>
+                </Grid>
+                <Grid item>
+                  <IconButton onClick={() => cluster.startAll()}>
+                    <PlayArrowIcon />
+                  </IconButton>
+                  <IconButton onClick={() => cluster.stopAll()}>
+                    <PauseIcon />
+                  </IconButton>
+                  <IconButton onClick={() => removeCluster(cluster.clusterId)}>
+                    <DeleteIcon />
+                  </IconButton>
+                  <IconButton onClick={() => cluster.addCpu()}>
+                    <MemoryIcon />
+                  </IconButton>
+                </Grid>
+              </Grid>
               <Grid container sx={{ height: '100%' }} columnSpacing={2}>
                 <Grid item xs={9}>
                   <SimulatorCanvas>

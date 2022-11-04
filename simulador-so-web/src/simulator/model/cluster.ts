@@ -17,16 +17,19 @@ export class Cluster {
     allProcess: Array<Process>;
     ioQueue: Queue<IORequest>;
     memory: Memory;
+    roundRobinQuantum: number = 1000;
     hook: Function = () => {};
 
     constructor({
         hook,
         ioQueue,
         memory,
+        roundRobinQuantum,
     }: {
         hook?: Function;
         ioQueue?: Queue<IORequest>;
         memory?: Memory | number;
+        roundRobinQuantum?: number;
     }) {
         this.clusterId = Cluster.nextId;
         Cluster.nextId++;
@@ -38,6 +41,7 @@ export class Cluster {
         this.allProcess = new Array<Process>();
         this.ioQueue = ioQueue ?? new Queue<IORequest>();
         this.memory = memory instanceof Memory ? memory : new Memory(memory);
+        this.roundRobinQuantum = roundRobinQuantum ?? 1000;
 
         this.io = new IO({ queue: this.ioQueue, hook: this.hook });
         this.io.start();
@@ -52,6 +56,7 @@ export class Cluster {
                 hook: this.hook,
                 memory: this.memory,
                 allProcess: this.allProcess,
+                roundRobinQuantum: this.roundRobinQuantum,
             })
         );
 
@@ -134,5 +139,11 @@ export class Cluster {
     public startCpu(cpuId: number): void {
         let cpu = this.cpus.find(e => e.cpuId === cpuId);
         if (cpu) cpu.start();
+    }
+
+    public setRoundRobin(newValue: number) {
+        this.roundRobinQuantum = newValue;
+        this.cpus.forEach(cpu => cpu.setRoundRobin(newValue));
+        this.hook();
     }
 }

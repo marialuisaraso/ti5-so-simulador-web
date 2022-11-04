@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Badge, Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Badge, Card, CardContent, IconButton, Typography, Grid } from '@mui/material';
 import { cpuContext } from '../../context/CpuContext';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -88,28 +88,32 @@ const CpuCard = ({ cpuId, clusterId }: CpuCardProps) => {
     return (
       <Card variant="outlined" style={{ marginTop: 10 }}>
         <CardContent>
-          <Badge badgeContent=" " color={mainCpu?.active ? 'success' : 'error'} variant="dot">
-            <Typography variant="h5" component="div">
-              CPU {mainCpu?.cpuId}
-            </Typography>
-          </Badge>
-          <Badge style={{ marginLeft: 63, color: '#808080' }}>
-            <IconButton
-              onClick={() => clusters?.find(e => e.clusterId === clusterId)?.startCpu(cpuId)}
-            >
-              <PlayArrowIcon />
-            </IconButton>
-            <IconButton
-              onClick={() => clusters?.find(e => e.clusterId === clusterId)?.stopCpu(cpuId)}
-            >
-              <PauseIcon />
-            </IconButton>
-            <IconButton
-              onClick={() => clusters?.find(e => e.clusterId === clusterId)?.removeCPU(cpuId)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Badge>
+          <Grid container alignItems="center" justifyContent="space-between">
+            <Grid item>
+              <Badge badgeContent=" " color={mainCpu?.active ? 'success' : 'error'} variant="dot">
+                <Typography variant="h5" component="div">
+                  CPU {mainCpu?.cpuId}
+                </Typography>
+              </Badge>
+            </Grid>
+            <Grid item>
+              <IconButton
+                onClick={() => clusters?.find(e => e.clusterId === clusterId)?.startCpu(cpuId)}
+              >
+                <PlayArrowIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => clusters?.find(e => e.clusterId === clusterId)?.stopCpu(cpuId)}
+              >
+                <PauseIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => clusters?.find(e => e.clusterId === clusterId)?.removeCPU(cpuId)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
 
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             Estado: {mainCpu?.active ? 'Ativo' : 'Inativo'}

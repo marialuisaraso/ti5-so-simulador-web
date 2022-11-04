@@ -34,6 +34,7 @@ export class CPU {
         allProcess,
         memory,
         ioQueue,
+        roundRobinQuantum,
     }: {
         readyQueue?: Queue<Process>;
         hook?: Function;
@@ -41,6 +42,7 @@ export class CPU {
         allProcess?: Array<Process>;
         memory?: Memory;
         ioQueue?: Queue<IORequest>;
+        roundRobinQuantum?: number;
     }) {
         this.cpuId = CPU.nextId;
         CPU.nextId++;
@@ -51,6 +53,7 @@ export class CPU {
         this.allProcess = allProcess ?? new Array<Process>();
         this.ioQueue = ioQueue ?? new Queue<IORequest>();
         this.memory = memory ?? new Memory();
+        this.roundRobinQuantum = roundRobinQuantum ?? 1000;
     }
 
     stop() {
@@ -142,6 +145,5 @@ export class CPU {
 
     public setRoundRobin(newValue: number) {
         this.roundRobinQuantum = newValue;
-        this.hook();
     }
 }
