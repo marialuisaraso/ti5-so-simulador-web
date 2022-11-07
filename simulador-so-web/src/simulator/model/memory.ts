@@ -21,8 +21,14 @@ export class Memory {
         this.usage = this.usage.filter(p => p.process.pId !== pId);
     }
 
-    checkToAdd(process: Process) {
-        if (this.getTotalUsage() + process.memorySize > this.size) throw 'Overflow de memória';
+    checkToAdd(memSize: number, returns?: boolean): boolean;
+    checkToAdd(process: Process, returns?: boolean): boolean;
+    checkToAdd(p: any, returns?: boolean) {
+        let memSize = p.memorySize || p;
+        if (this.getTotalUsage() + memSize > this.size) {
+            if (returns) return false;
+            else throw 'Overflow de memória';
+        }
         return true;
     }
 

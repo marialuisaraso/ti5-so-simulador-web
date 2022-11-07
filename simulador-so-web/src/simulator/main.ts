@@ -26,6 +26,20 @@ export function addCluster(hook: Function) {
     clusters.push(new Cluster({ hook }));
 }
 
+export function addProcess({
+    executionSize,
+    memorySize,
+    priority,
+    ioPeriod,
+}: {
+    executionSize?: number | null;
+    memorySize?: number;
+    priority?: number;
+    ioPeriod?: number;
+}) {
+    clusters[clusters.map(c => c.readyQueue.items.filter((pq, idx) => idx <= (priority??0)).flatMap(pq => c.memory.checkToAdd(memorySize ?? 4, true) ? pq.length : Number.MAX_SAFE_INTEGER).reduce((tot, l) => tot + l, 0)).reduce((minIdx, v, idx, a) => v < a[minIdx] ? idx : minIdx, 0)].addProcess({executionSize, memorySize, priority, ioPeriod});
+}
+
 export function removeCluster(clusterId: number) {
     let i = clusters.findIndex(c => c.clusterId === clusterId);
     let hook: Function = clusters[i].hook;

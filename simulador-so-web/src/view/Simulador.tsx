@@ -29,7 +29,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MemoryIcon from '@mui/icons-material/Memory';
 
-import { removeCluster } from '../simulator/main';
+import { removeCluster, addProcess } from '../simulator/main';
 
 enum actionModes {
   Process = 0,
@@ -45,7 +45,7 @@ export default function Simulador() {
   // ESTADO DO MODAL
   const [openMainModal, setMainModalOpen] = React.useState(false);
   const [mode, setMode] = React.useState(1);
-  const [cluster, setCluster] = React.useState<number>(0);
+  const [cluster, setCluster] = React.useState<number>(-1);
 
   const handleChange = (event: SelectChangeEvent) => {
     setCluster(Number(event.target.value));
@@ -135,21 +135,27 @@ export default function Simulador() {
           <FormControl fullWidth sx={{ mb: 3 }}>
             <InputLabel>Cluster</InputLabel>
             <Select label="Cluster" onChange={handleChange} value={JSON.stringify(cluster)}>
-              {clusters?.map((cluster, idx) => (
-                <MenuItem value={cluster.clusterId}>Cluster {idx + 1}</MenuItem>
-              ))}
+              {[<MenuItem value={-1}>Escalonamento automático</MenuItem>].concat(
+                ...(clusters || []).map(
+                  cluster =>
+                    <MenuItem value={cluster.clusterId}>Cluster {cluster.clusterId}</MenuItem> ?? []
+                )
+              )}
             </Select>
           </FormControl>
 
           <AddForm
             mode={mode}
             handleExternalSubmit={(data: any) => {
-              let clusterIdx = clusters?.findIndex(e => e.clusterId === cluster);
+              let c = clusters?.find(e => e.clusterId === cluster);
               if (mode === actionModes.Process) {
-                if (clusters)
-                  clusters[clusterIdx === -1 || !clusterIdx ? 0 : clusterIdx]?.addProcess(data);
+                if (c) {
+                  c.addProcess(data);
+                } else {
+                  addProcess(data);
+                }
               } else {
-                if (clusters) clusters[clusterIdx === -1 || !clusterIdx ? 0 : clusterIdx]?.addCpu();
+                if (c) c.addCpu();
               }
             }}
           />
